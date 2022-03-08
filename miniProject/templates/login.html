@@ -9,6 +9,8 @@
         <meta property="og:description" content="mini project 6-a-1"/>
         <meta property="og:image" content="{{ url_for('static', filename='travel.jpg') }}"/>
 
+        <meta http-equiv="Expires" content="-1" />
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -73,11 +75,7 @@
     </style>
 
     <script>
-
-         window.location.reload (true)
-
-
-         {% if msg %}
+        {% if msg %}
              alert("{{ msg }}")
             {% endif %}
 
@@ -305,7 +303,6 @@
                     }
                 })
         }
-
     </script>
 
 </head>
@@ -404,5 +401,9 @@
 
     </div>
 </section>
+
+<script>
+</script>
+
 </body>
 </html>
