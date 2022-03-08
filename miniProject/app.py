@@ -33,7 +33,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', nickname=user_info["nick"])
+        return render_template('index.html', user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -103,12 +103,6 @@ def check_nick():
 # ------------------------------------------------여기까지가 로그인 관련 -------------------------------------------
 
 
-# 해당 url 요청 -> 메인페이지 렌더링
-@app.route('/main')
-def main():
-    return render_template('index.html')
-
-
 # 작성폼으로 렌더링
 @app.route('/writeForm')
 def write():
@@ -124,14 +118,14 @@ def view(num):
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
         # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
-        user_info = db.user.find_one({"id": payload["id"]})
-
+        user_info = db.users.find_one({"username": payload["id"]})
+        print(user_info)
         # board db에서 해당 num값에 해당하는 dic 찾아오기
         post = db.board.find_one({'num': int(num)}, {'_id': False})
 
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         # 외래키를 nick으로 설정하면 post["nick"]으로 변경해야함
-        status = post["id"] == user_info['id']
+        status = post["nick"] == user_info['nickname']
 
         return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status)
 
