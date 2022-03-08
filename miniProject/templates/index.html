@@ -16,6 +16,7 @@
     <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <title>MiniProject-Main </title>
     <style>
 
@@ -181,7 +182,7 @@
                         let temp_html = `  <div class="col">
                                 <div class="card h-100">
 
-                                    <img src="../static/userImg/${file}"
+                                    <img src="/static/userimg/${file}"
                                          class="card-img-top"
                                         style="width: 300px;
                                        height: 150px;
@@ -215,7 +216,7 @@
 
         </div>
         <div class="hello">
-                <h4>""님 안녕하세요!</h4>
+                <h4>{{nickname}}님 안녕하세요!</h4>
         </div>
 
 
