@@ -16,7 +16,7 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://dushbag:<dushbag>@cluster0.jdbsd.mongodb.net/cluster0?retryWrites=true&w=majority')
 db = client.dbsparta_plus_week4
 
-
+# 토큰
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -36,23 +36,23 @@ def login():
     return render_template('login.html', msg=msg)
 
 
-@app.route('/user/<username>')
-def user(username):
-    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-
-        user_info = db.users.find_one({"username": username}, {"_id": False})
-        return render_template('user.html', user_info=user_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+#     # 프로필, 게시글 서버
+# @app.route('/user/<username>')
+# def user(username):
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+#
+#         user_info = db.users.find_one({"username": username}, {"_id": False})
+#         return render_template('user.html', user_info=user_info, status=status)
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
 
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
-    # 로그인
+    # 로그인 서버
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
@@ -71,7 +71,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-
+# 회원가입 서버
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -82,9 +82,6 @@ def sign_up():
         "username": username_receive,                               # 아이디
         "password": password_hash,                                  # 비밀번호
         "profile_name": nick_receive,                               # 프로필 이름 기본값은 닉네임----------원래는 id
-        "profile_pic": "",                                          # 프로필 사진 파일 이름
-        "profile_pic_real": "profile_pics/profile_placeholder.png", # 프로필 사진 기본 이미지
-        "profile_info": ""                                          # 프로필 한 마디
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -98,7 +95,7 @@ def check_dup():
 
 # 닉네임 중복확인 서버
 @app.route('/sign_up/check_nick', methods=['POST'])
-def check_dup():
+def check_nick():
     nick_receive = request.form['nick_give']
     exists = bool(db.users.find_one({"nick": nick_receive}))
     return jsonify({'result': 'success', 'exists': exists})
