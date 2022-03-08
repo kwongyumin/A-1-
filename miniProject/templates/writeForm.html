@@ -56,16 +56,24 @@
             bsCustomFileInput.init()
         })
 
+
         function posting() {
+            let getLink = window.location.search;
+            let getUserName = getLink.split('=');
+            let decodeNickname = getUserName[1];
+            let nickname = decodeURI(decodeNickname)
+
             let title = $('#title').val()
             let content = $("#content").val()
 
             let file = $('#file')[0].files[0]
             let form_data = new FormData()
 
+
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
+            form_data.append("nickname_give",nickname)
 
             $.ajax({
                 type: "POST",
@@ -75,14 +83,15 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
+
                     alert(response["msg"])
-                    window.location.href="/main"
+                    window.location.href="/"
                 }
             });
         }
 
         function go_main(){
-            window.location.href="/main"
+            window.location.href="/"
         }
 
     </script>
@@ -92,7 +101,7 @@
 <div class="wrap">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1>글 작성란 입니다</h1>
+            <p>글 작성!</p>
             <div class="posting-box">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="file">
