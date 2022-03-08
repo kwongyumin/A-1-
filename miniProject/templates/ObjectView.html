@@ -35,12 +35,14 @@
                                              title="Comments"><span>No comments</span></a></li>
                     </ul>
                 </div>
+                {% if status %}
                 <div class="share-artical">
                     <ul>
                         <li><a href="#"><img src="../static/img/facebooks.png" title="facebook">수정</a></li>
                         <li><a onclick="delete_post()"><img src="../static/img/twiter.png" title="Twitter">삭제</a></li>
                     </ul>
                 </div>
+                {% endif %}
                 <div class="clear"></div>
             </div>
             <!---start-comments-section--->
