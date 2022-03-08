@@ -1,27 +1,25 @@
 <!doctype html>
 <html lang="ko">
 <head>
-     <!-- Webpage Title -->
+
         <title>본격-추억팔이</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <meta property="og:title" content="놀러가고 싶어요. 제발요."/>
         <meta property="og:description" content="mini project 6-a-1"/>
         <meta property="og:image" content="{{ url_for('static', filename='travel.jpg') }}"/>
-        <!-- Required meta tags -->
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bulma CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-        <!-- Font Awesome CSS -->
+
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
-        <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300&family=Jua&display=swap" rel="stylesheet">
 
-        <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
@@ -45,12 +43,12 @@
         .title {
             font-weight: 800;
             font-size: 5rem;
-            font-family: 'Gugi', cursive;
+            font-family: 'Jua', sans-serif;
         }
 
         .subtitle {
             font-size: 2rem;
-            font-family: 'Jua', sans-serif;
+            font-family: 'Gaegu', cursive;
         }
 
         .is-sparta {
@@ -73,17 +71,14 @@
             color: gray;
         }
     </style>
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
 
     <script>
-        // {%
-        //     if msg %}
+        // if msg
         // alert("{{ msg }}")
-        // {%
-        //     endif %
-        // }
+        //     end if
+
 
         function toggle_sign_up() {
             $("#sign-up-box").toggleClass("is-hidden")
@@ -103,7 +98,7 @@
         }
 
         function is_nick(asValue) {
-            var regExp = /^(?=.*[a-zA-Z!@#$%^&*])[-a-zA-Z0-9_.!@#$%^&*]{6,12}$/;
+            var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.!@#$%^&*]{6,12}$/;
             return regExp.test(asValue);
         }
 
@@ -347,11 +342,8 @@
                         <hr>
                         <h4 class="mb-3">아직 회원이 아니라면</h4>
                         <nav class="level is-mobile">
-
                             <button class="level-item button is-sparta is-outlined"
-                                    onclick="toggle_sign_up()">
-                                회원가입하기
-                            </button>
+                                    onclick="toggle_sign_up()">회원가입하기</button>
                         </nav>
                     </div>
 
