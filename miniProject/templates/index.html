@@ -163,7 +163,18 @@
 
         //작성란으로 이동
         function go_writeForm(){
-            window.location.href="/writeForm"
+			$.ajax({
+                type: "POST",
+                url: "/go_write",
+                data: {},
+				success: function (response) {
+				let nickname = response['nickname']
+           	 	window.location.href="/writeForm?nick="+nickname
+
+                }
+            });
+
+
         }
         //쿼리스트링으로 num값을 넘김 / 추후 방법은 바꿀 것 , 우선 기능 점검
         function  go_view(num){
@@ -188,7 +199,7 @@
 
                     for(let i = 0 ;i < rows.length; i++){
                         let num = rows[i]['num']
-                        let writer = rows[i]['writer']
+                        let nickname = rows[i]['nickname']
                         let title = rows[i]['title']
                         let file = rows[i]['file']
                         //부트스트랩에 CSS가 적용되지않아, 우선은 인라인 스타일로 해결했음.
@@ -203,6 +214,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"
                                             style="font-size: 18px">${title}</h5>
+                                        <h5 class="card-title"
+                                            style="font-size: 18px">${nickname}</h5>
+
                                        <p class="mycomment"><button  onclick="go_view(${num})" type="button">자세히 보기</button></p>
                                     </div>
                                 </div>
@@ -235,6 +249,7 @@
 
         <div class="hello">
                 <h4>{{nickname}}님 안녕하세요!</h4>
+
         </div>
 
 
