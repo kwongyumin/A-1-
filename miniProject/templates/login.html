@@ -40,17 +40,23 @@
             padding: 1rem 1.5rem;
             max-width: 750px;
             margin: auto;
-            background-color: (255,255,255,0.4);
+        }
+
+        .titleback{
+            background-color: (255,255,255,0.6)!important;
         }
 
         .title {
+            color:black;
             font-weight: 800;
             font-size: 5rem;
             font-family: 'Jua', sans-serif;
         }
 
         .subtitle {
-            font-size: 2rem;
+            color:black;
+            font-weight: 800;
+            font-size: 2.5rem;
             font-family: 'Gaegu', cursive;
         }
 
@@ -309,10 +315,10 @@
 
 </head>
 <body>
-<section class="hero ">
+<section class="titleback">
     <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-        <h1>놀러가고 싶어요</h1>
-        <h3>제발요</h3>
+        <h1 class="title has-text-black">놀러가고 싶어요</h1>
+        <h3 class="subtitle has-text-black">룰루랄라</h3>
     </div>
 </section>
 <section class="section">
@@ -326,7 +332,7 @@
                         <div class="field has-addons">
                             <div class="control has-icons-left" style="width:100%">
                                 <input id="input-username" class="input" type="text" placeholder="아이디">
-                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                <span class="icon is-small is-left has-background-primary"><i class="fa fa-user"></i></span>
                             </div>
                             <div id="btn-check-dup" class="control is-hidden">
                                 <button class="button is-sparta" onclick="check_dup()">중복확인</button>
@@ -338,9 +344,9 @@
                         {#nick box#}
                         <div id="nick" class="field has-addons is-hidden">
                             <div class="control has-icons-left" style="width:100%">
-                                <input id="input-nick" class="input" type="text"
+                                <input id="input-nick" class="input " type="text"
                                        placeholder="닉네임">
-                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                <span class="icon is-small is-left has-background-primary"><i class="fa fa-user"></i></span>
                             </div>
                             <div id="btn-check-dup" class="control is-right">
                                 <button class="button is-sparta" onclick="check_nick()">중복확인</button>
@@ -353,7 +359,7 @@
                         <div class="field">
                             <div class="control has-icons-left">
                                 <input id="input-password" class="input" type="password" placeholder="비밀번호">
-                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                <span class="icon is-small is-left has-background-primary"><i class="fa fa-lock"></i></span>
                             </div>
                             <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도
                                 사용 가능합니다.</p>
@@ -361,7 +367,7 @@
                     </div>
                     <div id="div-sign-in-or-up" class="has-text-centered">
                         <nav class="level is-mobile">
-                            <button class="level-item button is-sparta" onclick="sign_in()" type="button">
+                            <button class="level-item button has-background-primary" onclick="sign_in()" type="button">
                                 로그인
                             </button>
 
@@ -377,10 +383,10 @@
                     <div id="sign-up-box" class="is-hidden">
                         <div class="mb-5">
                             <div class="field">
-                                <div class="control has-icons-left" style="width:100%">
-                                    <input id="input-password2" class="input" type="password"
+                                <div class="control has-icons-left " style="width:100%">
+                                    <input id="input-password2" class="input " type="password"
                                            placeholder="비밀번호 재입력">
-                                    <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                    <span class="icon is-small is-left has-background-primary"><i class="fa fa-lock"></i></span>
                                 </div>
                                 <p id="help-password2" class="help is-hidden">비밀번호를 다시 한 번 입력해주세요.</p>
 
