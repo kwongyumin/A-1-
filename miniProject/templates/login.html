@@ -287,14 +287,14 @@
         function sign_in() {
                 $.ajax({
                     type: "POST",
-                    url: "/api/???",
+                    url: "/api/login",
                     data: {username_give: $('#input-username').val(), password_give: $('#input-password').val()},
                     success: function (response) {
                         if (response['result'] == 'success') {
                             $.cookie('mytoken', response['token']);
 
                             alert('로그인 완료!')
-                            window.location.href = '/???'
+                            window.location.href = '/main'
                         } else {
                             alert(response['msg'])
                         }
