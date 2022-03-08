@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.u3t9k.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.dbsparta_plus_week4
+db = client.miniProject
 
 # db컬렉션은 회원정보를 담을 users
 # 게시판 정보를 담을 board 를 사용!
@@ -53,11 +53,11 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', user_info=user_info)
+        return render_template('index.html', nickname=user_info["nick"])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        return redirect(url_for("/login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for("/login", msg="로그인 정보가 존재하지 않습니다."))
 
 # 2.로그인시 로그인 페이지로 넘어감
 # 로그인 폼으로 렌더링, msg 파라미터를 같이 전달
