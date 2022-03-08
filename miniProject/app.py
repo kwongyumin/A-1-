@@ -73,17 +73,20 @@ def view(num):
     try:
         # 쿠키에 있는 유저의 정보를 읽어옴
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        token_id = payload["id"]
 
         # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
-        user_info = db.user.find_one({"username": payload["id"]})
+        user_info = db.user.find_one({"id": token_id})
         print(user_info)
+        print(user_info['nick'])
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
         post = db.board.find_one({'num': int(num)}, {'_id': False})
+        print(post)
 
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         # 외래키를 nick으로 설정하면 post["nick"]으로 변경해야함
-        status = post["id"] == payload["id"]
+        status = post["nick"] == user_info['nick']
 
         return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status)
 
@@ -167,6 +170,11 @@ def insert_content():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
 
+    # test용
+    nick_receive = request.form['nick_give']
+    print(nick_receive)
+    # 여기까지
+
     extension = file.filename.split('.')[-1]
 
     today = datetime.datetime.now()
@@ -181,7 +189,11 @@ def insert_content():
         'num': num,
         'title': title_receive,
         'content': content_receive,
+        # test용
+        'nick': nick_receive,
+        # 여기까지
         'file': f'{filename}.{extension}'
+
     }
 
     db.board.insert_one(doc)

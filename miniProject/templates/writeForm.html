@@ -60,12 +60,20 @@
             let title = $('#title').val()
             let content = $("#content").val()
 
+            {#test용#}
+            let nickname = $('#nickname').val()
+            {#여기까지#}
+
             let file = $('#file')[0].files[0]
             let form_data = new FormData()
 
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
+
+            {#test용#}
+            form_data.append("nick_give", nickname)
+            {#여기까지#}
 
             $.ajax({
                 type: "POST",
@@ -101,6 +109,13 @@
                 <div class="form-group">
                     <input type="email" class="form-control" id="title" placeholder="사진 제목">
                 </div>
+
+{#                실험용 삭제해야함#}
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="nickname" value="nick">
+                </div>
+{#                여기까지#}
+
                 <div class="form-group">
                     <textarea class="form-control" id="content" rows="3"
                               placeholder="내용 입력"></textarea>
