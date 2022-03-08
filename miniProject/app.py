@@ -17,7 +17,8 @@ db = client.miniProject
 SECRET_KEY = 'SPARTA'
 
 
-# db컬렉션은 회원정보를 담을 users
+# db컬렉션은
+# 회원정보를 담을 users / id/ pw
 # 게시판 정보를 담을 board 를 사용!
 
 # 로그인-> JWT토큰 -> 세션 유지 가능!
