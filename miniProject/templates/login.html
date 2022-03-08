@@ -9,6 +9,8 @@
         <meta property="og:description" content="mini project 6-a-1"/>
         <meta property="og:image" content="{{ url_for('static', filename='travel.jpg') }}"/>
 
+        <meta http-equiv="Expires" content="-1" />
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -28,7 +30,7 @@
             background-color: white;
             min-height: 100vh;
             padding-top: 80px;
-            background-image: url(/miniProject/static/horizon.jpg);
+            background-image: url(/miniProject/static/tarvel.jpg);
             background-clip: border-box;
             background-size: cover;
             background-position: center;
@@ -72,14 +74,12 @@
         }
     </style>
 
-
-
     <script>
-         {% if msg %}
+        {% if msg %}
              alert("{{ msg }}")
             {% endif %}
 
-
+        //회원가입 클릭하면 없던 버튼들이 촤라락
         function toggle_sign_up() {
             $("#sign-up-box").toggleClass("is-hidden")
             $("#div-sign-in-or-up").toggleClass("is-hidden")
@@ -183,9 +183,8 @@
             let password = $("#input-password").val()
             let password2 = $("#input-password2").val()
             let nick = $("#input-nick").val()
-            {#console.log(username, password, password2, nick)#}
 
-
+            //id 검정
             if ($("#help-id").hasClass("is-danger")) {
                 alert("아이디를 다시 확인해주세요.")
                 return;
@@ -194,7 +193,7 @@
                 return;
             }
 
-            // 닉네임 부분
+            // 닉네임 검정
             if ($("#help-nick").hasClass("is-danger")) {
                 alert("닉네임을 다시 확인해주세요.")
                 return;
@@ -203,6 +202,7 @@
                 return;
             }
 
+            // 비밀번호 검정
             if (password == "") {
                 $("#help-password").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
                 $("#input-password").focus()
@@ -214,6 +214,8 @@
             } else {
                 $("#help-password").text("사용할 수 있는 비밀번호입니다.").removeClass("is-danger").addClass("is-success")
             }
+
+            // 비밀번호 확인 과정
             if (password2 == "") {
                 $("#help-password2").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
                 $("#input-password2").focus()
@@ -225,6 +227,8 @@
             } else {
                 $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
             }
+
+            //모두 정상기입 시 회원가입과 동시에 저장
             $.ajax({
                 type: "POST",
                 url: "/api/register",
@@ -241,7 +245,7 @@
         }
 
 
-        // {# 로그인 시 필요한 id,pw 받기 #}
+        // {# 로그인 시 서버와 id,pw 대조 #}
         function sign_in() {
             let username = $("#input-username").val()
             let password = $("#input-password").val()
@@ -261,13 +265,14 @@
             } else {
                 $("#help-password-login").text("")
             }
+
+            //대조 성공 시 로그인
             $.ajax({
                 type: "POST",
                 url: "/api/login",
                 data: {
                     username_give: username,
                     password_give: password,
-                    nickname_give: nick
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -280,7 +285,8 @@
             });
         }
 
-        function login() {
+        //로그인 버튼(토큰 값 받아오기)
+        function sign_in() {
                 $.ajax({
                     type: "POST",
                     url: "/api/login",
@@ -297,10 +303,6 @@
                     }
                 })
         }
-
-        {#function nickload(){#}
-        {#    document.write({nick})#}
-        {#}#}
     </script>
 
 </head>
@@ -399,5 +401,9 @@
 
     </div>
 </section>
+
+<script>
+</script>
+
 </body>
 </html>
