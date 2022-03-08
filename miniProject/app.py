@@ -1,57 +1,106 @@
+from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
-
+from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
-from pymongo import MongoClient
-
-client = MongoClient("mongodb+srv://test:sparta@cluster0.u3t9k.mongodb.net/Cluster0?retryWrites=true&w=majority")
-db = client.miniProject
-
-# JWT 토큰을 만들 때 필요한 비밀문자열입니다. 아무거나 입력해도 괜찮습니다.
-# 이 문자열은 서버만 알고있기 때문에, 내 서버에서만 토큰을 인코딩(=만들기)/디코딩(=풀기) 할 수 있습니다.
+# 토큰 비밀 문자열
 SECRET_KEY = 'SPARTA'
 
+client = MongoClient('mongodb+srv://test:sparta@cluster0.u3t9k.mongodb.net/Cluster0?retryWrites=true&w=majority')
+db = client.miniProject
 
-# db컬렉션은 회원정보를 담을 users
-# 게시판 정보를 담을 board 를 사용!
+# DB--------------------
+# 회원 관련 정보 -> users
+# 게시판 관련 정보 -> board
 
-# 로그인-> JWT토큰 -> 세션 유지 가능!
 
-# num : 게시물 index 번호!
-# name : 게시자 이름
-# title : 제목
-# content : 내용
 
-# mongoDB -> 외래키 사용 여부 ! /
+# ------------------------------로그인, 회원가입(중복확인 등)----------------------------------
 
-# API 설계
-
-# 각 페이지로 렌더링
-# 최초 접속 시 로그인 화면
-# 로그인 성공 시에는 main 페이지로 이동!
-# 회원가입 후에는 로그인 페이지로 다시 이동 후 로그인 성공 시 main페이지로 이동
-# 로그인이 실패한다면 다시 로그인 페이지
-
-# 로그인 강의 완강 후 다시 확인해보기
-# 최상위 수정필요
-
-#flask에서 html 렌더링 시 -> nickname값이 안넘어감
+# 1.토큰 받아오기
+#flask에서 html 렌더링 시 -> nickname값이 안넘어갔음
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.user.find_one({"id": payload['id']})
+        user_info = db.users.find_one({"username": payload["id"]})
         return render_template('index.html', nickname=user_info["nick"])
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+# 2.로그인시 로그인 페이지로 넘어감
+# 로그인 폼으로 렌더링, msg 파라미터를 같이 전달
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
+
+# 3.로그인 서버
+# 로그인 창, 로그인 성공,실패 알려줌, nickname receive는 사용여부에 따라 삭제가능. 있어도 상관없음. 토큰유지 2시간
+@app.route('/api/login', methods=['POST'])
+def sign_in():
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+    #nick_receive = request.form['nickname_give']
+
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = db.users.find_one({'username': username_receive, 'password': pw_hash})
+
+    if result is not None:
+        payload = {
+         'id': username_receive,
+         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 2)
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'result': 'success', 'token': token})
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+# 4. 회원가입 서버
+# 회원가입 api /회원 정보를 받아 비밀번호를 해쉬 처리하여 db에 저장
+@app.route('/api/register', methods=['POST'])
+def sign_up():
+    username_receive = request.form['username_give']
+    nick_receive = request.form['nickname_give']
+    password_receive = request.form['password_give']
+    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    doc = {
+        "username": username_receive,                               # 아이디
+        "password": password_hash,                                  # 비밀번호
+        "profile_name": nick_receive,                               # 프로필 기본값=닉네임----------원래는 id
+    }
+    db.users.insert_one(doc)
+    return jsonify({'result': 'success'})
+
+# 5. 아이디 중복확인
+@app.route('/api/check_dup', methods=['POST'])
+def check_dup():
+    username_receive = request.form['username_give']
+    exists = bool(db.users.find_one({"username": username_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+# 6. 닉네임 중복확인
+@app.route('/api/check_nick', methods=['POST'])
+def check_nick():
+    nick_receive = request.form['nickname_give']
+    exists = bool(db.users.find_one({"nick": nick_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+
+
+# ------------------------------------------------여기까지가 로그인 관련 -------------------------------------------
 
 
 # 해당 url 요청 -> 메인페이지 렌더링
@@ -91,57 +140,11 @@ def view(num):
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-# 로그인 폼으로 렌더링, msg 파라미터를 같이 전달
-@app.route('/login')
-def login():
-    msg = request.args.get("msg")
-    return render_template('login.html', msg=msg)
-
-
 # 회원가입 폼으로 렌더링, 토글은 아직 사용 안함,
 @app.route('/register')
 def register():
     return render_template('register.html')
 
-
-# 회원가입 api /회원 정보를 받아 비밀번호를 해쉬 처리하여 db에 저장
-@app.route('/api/register', methods=['POST'])
-def api_register():
-    id_receive = request.form['id_give']
-    pw_receive = request.form['pw_give']
-    nickname_receive = request.form['nickname_give']
-
-    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-
-    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'nick': nickname_receive})
-
-    return jsonify({'result': 'success'})
-
-
-# 로그인 api
-
-@app.route('/api/login', methods=['POST'])
-def api_login():
-    id_receive = request.form['id_give']
-    pw_receive = request.form['pw_give']
-
-    # db에는 현재 해당 아이디의 비밀번호가 해쉬처리 되어있으므로 , 로그인 시에도 해쉬처리 필요
-    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-
-    # id, 암호화된 pw를 가지고 해당 유저 찾기
-    result = db.user.find_one({'id': id_receive}, {'pw': pw_hash})
-    # 1 .해당 유저가 있다면..
-    if result is not None:
-        # payload 만료 시간 3600 초 변경필요
-        payload = {
-            'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60*60)
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
-        return jsonify({"result": "success", "token": token})
-    else:
-        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
 # 전체 후기 조회 /Get방식 메서드를 이용 새로고침 시 전체목록을 가져온다.
