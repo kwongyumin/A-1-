@@ -79,7 +79,7 @@ def sign_up():
     doc = {
         "username": username_receive,                               # 아이디
         "password": password_hash,                                  # 비밀번호
-        "profile_name": nick_receive,                               # 프로필 기본값=닉네임----------원래는 id
+        "nickname": nick_receive,                                   # 프로필 기본값=닉네임----------원래는 id
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
