@@ -33,7 +33,7 @@
         }
 
         .posting-box {
-            width: 500px;
+            max-width: 500px;
             margin-top: 20px;
         }
 
@@ -52,6 +52,9 @@
 
     </style>
     <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
 
         function posting() {
             let title = $('#title').val()
@@ -77,6 +80,11 @@
                 }
             });
         }
+
+        function go_main(){
+            window.location.href="/main"
+        }
+
     </script>
 </head>
 
@@ -99,6 +107,7 @@
                 </div>
                 <div>
                     <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
+                    <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
                 </div>
             </div>
         </div>

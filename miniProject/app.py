@@ -66,10 +66,11 @@ def write():
     return render_template('writeForm.html')
 
 
-# 단일객체의 정보를 보여주는 페이지로 렌더링
-@app.route('/ObjectView')
-def view():
-    return render_template('ObjectView.html')
+# 단일객체 렌더링
+@app.route('/ObjectView/<num>')
+def view(num):
+    post = db.board.find_one({'num': int(num)}, {'_id': False})
+    return render_template('ObjectView.html', post=post, num=num)
 
 
 # 로그인 폼으로 렌더링, msg 파라미터를 같이 전달
@@ -168,20 +169,17 @@ def insert_content():
 
     return jsonify({'msg': '작성 완료!'})
 
+# 포스트 삭제
+@app.route('/api/delete_post', methods=['POST'])
+def delete_word():
+    num_receive = request.form["num_give"]
+    db.board.delete_one({"num": int(num_receive)})
+    return jsonify({'result': 'success', 'msg': '포스트 삭제ㅠ'})
 
-# 객체마다 부여된 num값을 받아와서 url에 합쳐서 view 쪽에서 받아준다.(ex: window.location.href="/view?num="+num)
-@app.route("/getTitleNum", methods=["POST"])
-def select_num():
-    return jsonify({"": ""})
 
 
-# 단일 객체의 num값을 받은 view 페이지에서는 num값을 사용해서
-# num값에 해당하는 객체의 정보를 받는다. (url로 넘겨받은 num값을 활용 / let getLink = window.location.search)
-# split 함수를 사용 필요한 부분만 사용,
 
-@app.route("/getTitleNumView", methods=["POST"])
-def get_num_view():
-    return jsonify({"": ""})
+
 
 
 if __name__ == '__main__':

@@ -156,13 +156,23 @@
         function  go_view(num){
             let num_title = num
 			//url += num
-			window.location.href="/ObjectView?num=" + num_title
+			window.location.href="/ObjectView/" + num_title
         }
 
-        //로그인 성공 후 메인 화면 진입 시 게시판 출력
+
+        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+        function logout(){
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href='/login'
+        }
+
+		//로그인 성공 후 메인 화면 진입 시 게시판 출력
         $(document).ready(function (){
             listing();
         });
+
+
 
         function listing(){
              $.ajax({
@@ -213,6 +223,7 @@
 
         <div class = "btn">
             <button onclick="go_writeForm()">Travel Review</button>
+			<button onclick="logout()">Logout</button>
 
         </div>
         <div class="hello">
