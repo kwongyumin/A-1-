@@ -112,11 +112,9 @@ def write(nickname):
     try:
         # 쿠키에 있는 유저의 정보를 읽어옴
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
 
         # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
         user_info = db.users.find_one({"username": payload["id"]})
-        print(user_info)
 
         status = False
 
@@ -181,7 +179,7 @@ def insert_content():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
-
+    print(nickname_receive)
     extension = file.filename.split('.')[-1]
 
     today = datetime.datetime.now()
@@ -200,6 +198,7 @@ def insert_content():
         'file': f'{filename}.{extension}'
 
     }
+    print(doc)
 
     db.board.insert_one(doc)
 
@@ -221,15 +220,12 @@ def update_post(num):
     try:
         # 쿠키에 있는 유저의 정보를 읽어옴
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
 
         # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
         user_info = db.users.find_one({"username": payload["id"]})
-        print(user_info)
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
         post = db.board.find_one({'num': int(num)}, {'_id': False})
-        print(post)
 
         status = True
 
@@ -268,7 +264,7 @@ def update_content():
 
     # 여기까지 완성!!!!!!!!
     # 몽고db update 쿼리 알아내면됨!!!
-
+    db.users.update_one({'name': 'bobby'}, {'$set': {'age': 19}})
     db.board.update(
         {'num': num},
         {'$set': {

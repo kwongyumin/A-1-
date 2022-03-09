@@ -63,8 +63,8 @@
             {#let decodeNickname = getUserName[1];#}
             {#let nickname = decodeURI(decodeNickname)#}
 
-
-            let nickname = $('#nickname').val()
+            let nickname = $('#nickname').text()
+            console.log("nickname"+nickname)
 
             let title = $('#title').val()
             let content = $("#content").val()
@@ -99,7 +99,7 @@
             {#let decodeNickname = getUserName[1];#}
             {#let nickname = decodeURI(decodeNickname)#}
 
-            let nickname = $('#nickname').val()
+            let nickname = $('#nickname').text()
 
             let title = $('#up_title').val()
             let content = $("#up_content").val()
@@ -148,7 +148,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <p>글 작성!</p>
-            <p id="nickname">작성자: {{ user_info.nickname }}</p>
+            <p>작성자: <span id="nickname">{{ user_info.nickname }}</span></p>
             <div class="posting-box">
                 {% if status == False %}
                     <div class="custom-file">
