@@ -122,7 +122,7 @@ def write(nickname):
 
         status = False
 
-        return render_template('writeForm.html', user_info=user_info, status=status, Count=CountNum)
+        return render_template('writeForm.html', user_info=user_info, status=status)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -175,23 +175,20 @@ def register():
 #    return jsonify({'boardlist': boardList})
 
 
-# board 에 들어갈 인덱스 값을 전역변수로 바꿔서 다른 함수에서도 사용!
-count = list(db.board.find({}, {'_id': False}))
-global CountNum
-CountNum = len(count) + 1
+
 
 # 작성 후 DB에 저장
 @app.route('/write', methods=['POST'])
 def insert_content():
 
-    # 전역변수를 사용해서 넘버링
+    #현재 시간을 primary 키값으로 설정
+    num = request.form["num_give"]
 
     # 파라미터값 받기
     file = request.files["file_give"]
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
-    print(nickname_receive)
     extension = file.filename.split('.')[-1]
 
     today = datetime.datetime.now()
@@ -203,7 +200,7 @@ def insert_content():
     file.save(save_to)
 
     doc = {
-        'num': CountNum,
+        'num': num,
         'title': title_receive,
         'nickname': nickname_receive,
         'content': content_receive,
