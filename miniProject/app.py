@@ -144,10 +144,11 @@ def view(num):
         user_info = db.users.find_one({"username": payload["id"]})
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
-        post = db.board.find_one({'num': int(num)}, {'_id': False})
+        post = db.board.find_one({'num': num}, {'_id': False})
 
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         status = post["nickname"] == user_info['nickname']
+
 
         return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status )
 
@@ -234,8 +235,8 @@ def update_post(num):
         user_info = db.users.find_one({"username": payload["id"]})
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
-        post = db.board.find_one({'num': int(num)}, {'_id': False})
-
+        post = db.board.find_one({'num': num}, {'_id': False})
+        print(post)
         status = True
 
         return render_template('writeForm.html', user_info=user_info, status=status, post=post)
