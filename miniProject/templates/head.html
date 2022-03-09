@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../static/head.css">
+
     <link href="../static/pinball.css" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="../static/img/fav-icon.png"/>
@@ -69,7 +69,16 @@
         //작성란으로 이동
         function go_writeForm(nickname){
             window.location.href = "/writeForm/"+nickname
+
         }
+
+        function  go_view(num){
+            let num_title = num
+			//url += num
+			window.location.href="/ObjectView/" + num_title
+        }
+
+
     </script>
     <style>
 
