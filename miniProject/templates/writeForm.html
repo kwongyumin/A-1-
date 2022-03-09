@@ -58,16 +58,13 @@
 
 
         function posting() {
-            {#let getLink = window.location.search;#}
-            {#let getUserName = getLink.split('=');#}
-            {#let decodeNickname = getUserName[1];#}
-            {#let nickname = decodeURI(decodeNickname)#}
+
 
             let nickname = $('#nickname').text()
 
             let title = $('#title').val()
             let content = $("#content").val()
-
+            let num = Date.now()
             let file = $('#file')[0].files[0]
             let form_data = new FormData()
 
@@ -76,6 +73,7 @@
             form_data.append("title_give", title)
             form_data.append("content_give", content)
             form_data.append("nickname_give",nickname)
+            form_data.append("num_give",num)
 
             $.ajax({
                 type: "POST",
@@ -93,10 +91,7 @@
         }
 
         function post_update(num) {
-            {#let getLink = window.location.search;#}
-            {#let getUserName = getLink.split('=');#}
-            {#let decodeNickname = getUserName[1];#}
-            {#let nickname = decodeURI(decodeNickname)#}
+
 
             let nickname = $('#nickname').text()
 
