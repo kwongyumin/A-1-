@@ -58,10 +58,7 @@
 
 
         function posting() {
-            {#let getLink = window.location.search;#}
-            {#let getUserName = getLink.split('=');#}
-            {#let decodeNickname = getUserName[1];#}
-            {#let nickname = decodeURI(decodeNickname)#}
+
 
             let nickname = $('#nickname').text()
             console.log("nickname"+nickname)
@@ -94,10 +91,7 @@
         }
 
         function post_update(num) {
-            {#let getLink = window.location.search;#}
-            {#let getUserName = getLink.split('=');#}
-            {#let decodeNickname = getUserName[1];#}
-            {#let nickname = decodeURI(decodeNickname)#}
+
 
             let nickname = $('#nickname').text()
 

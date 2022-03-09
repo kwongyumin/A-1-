@@ -1,9 +1,10 @@
-from pymongo import MongoClient
-import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for
 from datetime import timedelta
+
+import jwt
+from flask import Flask, render_template, jsonify, request, redirect, url_for
+from pymongo import MongoClient
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -27,11 +28,13 @@ db = client.miniProject
 # flask에서 html 렌더링 시 -> nickname값이 안넘어갔음
 @app.route('/')
 def home():
+    boardList = list(db.board.find({},{"_id":False}))
+
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', nickname=user_info["nickname"], user_info=user_info)
+        return render_template('index.html', nickname=user_info["nickname"], user_info=user_info , boardlist = boardList)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -104,8 +107,9 @@ def check_nick():
 
 # ------------------------------------------------여기까지가 로그인 관련 -------------------------------------------
 
+# ------------------------------------------------HTML 렌더링 ---------------------------------------------------
 
-# 작성폼으로 렌더링
+# header 부분 리뷰 작성 버튼 클릭 시 작성폼으로 렌더링
 @app.route('/writeForm/<nickname>')
 def write(nickname):
     token_receive = request.cookies.get('mytoken')
@@ -118,7 +122,7 @@ def write(nickname):
 
         status = False
 
-        return render_template('writeForm.html', user_info=user_info, status=status)
+        return render_template('writeForm.html', user_info=user_info, status=status, Count=CountNum)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -129,6 +133,8 @@ def write(nickname):
 # 단일객체 렌더링
 @app.route('/ObjectView/<num>')
 def view(num):
+
+
     token_receive = request.cookies.get('mytoken')
     try:
         # 쿠키에 있는 유저의 정보를 읽어옴
@@ -143,7 +149,7 @@ def view(num):
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         status = post["nickname"] == user_info['nickname']
 
-        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status)
+        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status )
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -151,28 +157,34 @@ def view(num):
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-# 회원가입 폼으로 렌더링, 토글은 아직 사용 안함,
+# 회원가입 폼으로 렌더링,
 @app.route('/register')
 def register():
     return render_template('register.html')
 
 
+
+#------------------------------------------------기능구현 API ---------------------------------------------------
+
 # 전체 후기 조회 /Get방식 메서드를 이용 새로고침 시 전체목록을 가져온다.
 # DB에 더미데이터 집어넣어서 확인하기
-@app.route("/boardList", methods=["GET"])
-def board_list():
-    boardList = list(db.board.find({}, {'_id': False}))
+#@app.route("/boardList", methods=["GET"])
+#def board_list():
+#    boardList = list(db.board.find({}, {'_id': False}))
 
-    return jsonify({'boardlist': boardList})
+#    return jsonify({'boardlist': boardList})
 
 
-# 작성란 -> 내용들을 DB에 저장!
+# board 에 들어갈 인덱스 값을 전역변수로 바꿔서 다른 함수에서도 사용!
+count = list(db.board.find({}, {'_id': False}))
+global CountNum
+CountNum = len(count) + 1
 
+# 작성 후 DB에 저장
 @app.route('/write', methods=['POST'])
 def insert_content():
-    # 넘버링
-    count = list(db.board.find({}, {'_id': False}))
-    num = len(count) + 1
+
+    # 전역변수를 사용해서 넘버링
 
     # 파라미터값 받기
     file = request.files["file_give"]
@@ -191,7 +203,7 @@ def insert_content():
     file.save(save_to)
 
     doc = {
-        'num': num,
+        'num': CountNum,
         'title': title_receive,
         'nickname': nickname_receive,
         'content': content_receive,
@@ -236,9 +248,7 @@ def update_post(num):
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
-# 작성란 -> 내용들을 DB에 저장!
-
+# 상세페이지에서 수정 버튼 클릭 시 -> JWT토큰 이용 , 사용자 정보를 WRITE 폼으로 보내어서 수정한다.
 @app.route('/write/update', methods=['POST'])
 def update_content():
     # 파라미터값 받기
@@ -253,7 +263,7 @@ def update_content():
 
     extension = file.filename.split('.')[-1]
 
-    today = datetime.now()
+    today = datetime.datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
     filename = f'file-{mytime}'
@@ -264,8 +274,8 @@ def update_content():
 
     # 여기까지 완성!!!!!!!!
     # 몽고db update 쿼리 알아내면됨!!!
-    db.users.update_one({'name': 'bobby'}, {'$set': {'age': 19}})
-    db.board.update(
+
+    db.board.update_one(
         {'num': num},
         {'$set': {
             'title': title_receive,
@@ -278,15 +288,7 @@ def update_content():
     return jsonify({'msg': "작성완료!", 'num': num})
 
 
-@app.route('/go_write', methods=['POST'])
-def response_token():
-    token_receive = request.cookies.get('mytoken')
 
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    user_info = db.users.find_one({"username": payload["id"]})
-    nick = user_info['nickname']
-
-    return jsonify({'nickname': nick})
 
 
 if __name__ == '__main__':
