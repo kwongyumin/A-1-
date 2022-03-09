@@ -28,13 +28,13 @@ db = client.miniProject
 # flask에서 html 렌더링 시 -> nickname값이 안넘어갔음
 @app.route('/')
 def home():
-    boardList = list(db.board.find({},{"_id":False}))
+    boardList = list(db.board.find({}, {"_id": False}))
 
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', nickname=user_info["nickname"], user_info=user_info , boardlist = boardList)
+        return render_template('index.html', nickname=user_info["nickname"], user_info=user_info, boardlist=boardList)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -133,8 +133,6 @@ def write(nickname):
 # 단일객체 렌더링
 @app.route('/ObjectView/<num>')
 def view(num):
-
-
     token_receive = request.cookies.get('mytoken')
     try:
         # 쿠키에 있는 유저의 정보를 읽어옴
@@ -149,8 +147,12 @@ def view(num):
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         status = post["nickname"] == user_info['nickname']
 
+        heart = {
+            "count_heart": db.likes.count_documents({"num": num}),
+            "heart_by_me": bool(db.likes.find_one({"num": num, "username": user_info["username"]}))
+        }
 
-        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status )
+        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status, heart=heart)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -163,26 +165,23 @@ def view(num):
 def register():
     return render_template('register.html')
 
-##
 
-#------------------------------------------------기능구현 API ---------------------------------------------------
+# ------------------------------------------------기능구현 API ---------------------------------------------------
+
 
 # 전체 후기 조회 /Get방식 메서드를 이용 새로고침 시 전체목록을 가져온다.
 # DB에 더미데이터 집어넣어서 확인하기
-#@app.route("/boardList", methods=["GET"])
-#def board_list():
+# @app.route("/boardList", methods=["GET"])
+# def board_list():
 #    boardList = list(db.board.find({}, {'_id': False}))
 
 #    return jsonify({'boardlist': boardList})
 
 
-
-
 # 작성 후 DB에 저장
 @app.route('/write', methods=['POST'])
 def insert_content():
-
-    #현재 시간을 primary 키값으로 설정
+    # 현재 시간을 primary 키값으로 설정
     num = request.form["num_give"]
 
     # 파라미터값 받기
@@ -246,6 +245,7 @@ def update_post(num):
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
 # 상세페이지에서 수정 버튼 클릭 시 -> JWT토큰 이용 , 사용자 정보를 WRITE 폼으로 보내어서 수정한다.
 @app.route('/write/update', methods=['POST'])
 def update_content():
@@ -269,7 +269,6 @@ def update_content():
     save_to = f'static/userImg/{filename}.{extension}'
     file.save(save_to)
 
-    
     db.board.update_one(
         {'num': num},
         {'$set': {
@@ -283,7 +282,37 @@ def update_content():
     return jsonify({'msg': "수정완료!", 'num': num})
 
 
+@app.route('/update_like', methods=["POST"])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        # 쿠키에 있는 유저의 정보를 읽어옴
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
+        user_info = db.users.find_one({"username": payload["id"]})
+
+        action_receive = request.form['action_give']
+        num_receive = request.form['num_give']
+
+        doc = {
+            "num": num_receive,
+            "username": user_info["username"]
+        }
+
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+
+        count = db.likes.count_documents({"num": num_receive})
+
+        return jsonify({"result": "success", "msg": "좋아요!", "count": count})
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 if __name__ == '__main__':
