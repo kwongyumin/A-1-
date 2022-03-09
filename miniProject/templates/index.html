@@ -1,261 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- 클라이언트 화면 비율에 맞춰 View 크기 조정 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- 부트스트랩 템플릿 / jQuery -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <!-- Bulma CSS 링크 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <title>MiniProject-Main </title>
-    <style>
-
-        * {margin:0;padding:0;
-            font-family: 'Stylish', sans-serif;}
-
-
-        /*헤더 부분*/
-        .mainSection{
-
-
-            color: white;
-			margin: 500px;
-            height: 120px;
-            max-width: 100vw;
-            margin:auto;
-			border-bottom: 1px solid lightgray;
-			box-shadow: 3px 3px 10px gray;
-        }
-
-		.logo{
-			float: left;
-			margin-left: 120px;
-		}
-
-        /* 슬라이드 배너 섹션 */
-        .section{
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-         /* INPUT 가리기 */
-        .section input[id*="slide"] {display:none;}
-
-        /* 슬라이드 영역 - max-width 크기를 조절해주면 됩니다*/
-        .section .slidewrap {width:1200px; height: 400px; margin:0 auto;overflow:hidden;}
-        .section .slidelist {white-space:nowrap;font-size:0;}
-        .section .slidelist > li {display:inline-block;vertical-align:middle;width:100%;transition:all .5s;}
-        .section .slidelist > li > a {display:block;position:relative;}
-        .section .slidelist > li > a img {width:100%;}
-
-        /* 좌우로 넘기는 LABEL버튼에 대한 스타일 */
-        .section .slidelist label {position:absolute;z-index:1;top:45%;transform:translateY(-50%);padding:50px;cursor:pointer;}
-        .section .slidelist .left {left:30px;background:url('../static/img/left.png') center center / 100% no-repeat;}
-        .section .slidelist .right {right:30px;background:url('../static/img/right.png') center center / 100% no-repeat;}
-
-        /* INPUT 체크되면 변화값이 li까지 전달되는 스타일 */
-        .section input[id="slide01"]:checked ~ .slidewrap .slidelist > li {transform:translateX(0%);}
-        .section input[id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-100%);}
-        .section input[id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-200%);}
-
-        /* 일반 버튼 */
-         button{
-
-            text-align: left;
-            width: 120px;
-            height: 40px;
-
-            background-color: transparent;
-            color: gray;
-
-
-            border: none;
-
-            margin-top: 10px;
-            margin-right: 5px;
-
-            font-weight: bold;
-			transition-duration: 0.5s;
-        }
-        button:hover {
-            text-align: center;
-            border-radius: 15px;
-            border: 1px solid white;
-
-            background-color: dodgerblue;
-			transition-duration: 0.5s;
-			color: white;
-        }
-
-        /* 상위 헤더 버튼 */
-        .btn{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-
-        .btn > button {
-            text-align: center;
-            width: 135px;
-            height: 40px;
-
-            background-color: transparent;
-            color: lightgray;
-
-            border-radius: 25px;
-            border: 2px solid lightgray;
-
-            margin-top: 10px;
-            margin-right: 5px;
-
-            font-weight: bold;
-			transition-duration: 0.5s;
-
-        }
-
-        .btn > button:hover {
-            border: 2px solid white;
-            background-color: dodgerblue;
-			transition-duration: 0.5s;
-			color: white;
-        }
-        /* 환영합니다! */
-        .hello{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-        .hello > h4{
-			color: lightgray;
-            font-size: 30px;
-            margin-right: 20px;
-			 font-weight: bold;
-        }
-        /* 포스팅 카드 너비조절 */
-       .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
-
-    </style>
-
-    <script>
-
-		//로그아웃
-		function go_logout(){
-			$.removeCookie('mytoken');
-			alert('로그아웃!')
-			window.location.href='/login'
-		}
-
-        //작성란으로 이동
-        function go_writeForm(){
-			$.ajax({
-                type: "POST",
-                url: "/go_write",
-                data: {},
-				success: function (response) {
-				let nickname = response['nickname']
-           	 	window.location.href="/writeForm?nick="+nickname
-
-                }
-            });
-
-
-        }
-        //쿼리스트링으로 num값을 넘김 / 추후 방법은 바꿀 것 , 우선 기능 점검
-        function  go_view(num){
-            let num_title = num
-			//url += num
-			window.location.href="/ObjectView/" + num_title
-        }
-
-        //로그인 성공 후 메인 화면 진입 시 게시판 출력
-        $(document).ready(function (){
-            listing();
-        });
-
-        function listing(){
-             $.ajax({
-                type: 'GET',
-                url: '/boardList',
-                data: {},
-                success: function (response) {
-
-                    let rows = response['boardlist']
-
-                    for(let i = 0 ;i < rows.length; i++){
-                        let num = rows[i]['num']
-                        let nickname = rows[i]['nickname']
-                        let title = rows[i]['title']
-                        let file = rows[i]['file']
-                        //부트스트랩에 CSS가 적용되지않아, 우선은 인라인 스타일로 해결했음.
-                        let temp_html = `  <div class="col">
-                                <div class="card h-100">
-
-                                    <img src="/static/userimg/${file}"
-                                         class="card-img-top"
-                                        style="width: 300px;
-                                       height: 150px;
-                                       object-fit: cover;">
-                                    <div class="card-body">
-                                        <h5 class="card-title"
-                                            style="font-size: 18px">${title}</h5>
-                                        <h5 class="card-title"
-                                            style="font-size: 18px">${nickname}</h5>
-
-                                       <p class="mycomment"><button  onclick="go_view(${num})" type="button">자세히 보기</button></p>
-                                    </div>
-                                </div>
-                            </div>`
-                        //go_view 함수에 객체의 num값을 파라미터로 전달
-                        $('#cards-box').append(temp_html)
-
-                    }
-
-
-                }
-             })
-        }
-    </script>
-
-</head>
 <body>
-
-    <section class="mainSection">
-
-		<div class="logo">
-            <a href="/"><img src="../static/img/logo.png" title="pinbal"/></a>
-        </div>
-
-
-        <div class = "btn">
-            <button onclick="go_writeForm()">Travel Review</button>
-			<button onclick="go_logout()">Logout</button>
-        </div>
-
-        <div class="hello">
-                <h4>{{nickname}}님 안녕하세요!</h4>
-
-        </div>
-
-
-
-
-    </section>
+{% include('head.html') %}
 
 <div class="section">
 		<input type="radio" name="slide" id="slide01" checked>
@@ -291,8 +38,27 @@
 
 <div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+		{% for boardList in boardlist %}
+		<div class="col">
+			<div class="card h-100">
 
-    </div>
+				<img src="/static/userimg/{{boardList.file}}"
+					 class="card-img-top"
+					 style="width: 300px;
+                                       height: 150px;
+                                       object-fit: cover;">
+				<div class="card-body">
+					<h5 class="card-title"
+						style="font-size: 18px">{{boardList.title}}</h5>
+					<h5 class="card-title"
+						style="font-size: 18px">{{boardList.nickname}}</h5>
+
+					<p class="mycomment"><button  onclick="go_view({{boardList.num}})" type="button">자세히 보기</button></p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
 </div>
 
 </body>
