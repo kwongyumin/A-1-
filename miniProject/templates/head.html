@@ -72,12 +72,6 @@
 
         }
 
-        function  go_view(num){
-            let num_title = num
-			//url += num
-			window.location.href="/ObjectView/" + num_title
-        }
-
 
     </script>
     <style>
@@ -148,18 +142,21 @@
 <!---start-header---->
 <div class="header">
     <div class="wrap">
-        <div class="logobox">
-            <a href="/"><img src="../static/img/logo.png" alt="pinball"/></a>
+        <div class="logo" style="width: 55%;">
+            <a href="/" style="float: right;"><img src="../static/img/logo.png" title="pinbal"/></a>
         </div>
-        <div class="headright" >
-            <div class="smilenickname">            
-                    <div><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span style="margin: auto">{{ user_info.nickname }}</span></a></div>
+        <div class="userinfo" style="display: inline-grid; width: 40%;">
+            <div class="user" style="margin: auto;">
+                <ul style="float: right;">
+                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span style="margin: auto">{{ user_info.nickname }}</span></a></li>
+                </ul>
             </div>
-            <div class="btn">
-                <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
-                <button onclick="go_logout()">Logout</button>
-            </div>
+        <div class="btn">
+            <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
+            <button onclick="go_logout()">Logout</button>
         </div>
+        </div>
+        <div class="clear"></div>
     </div>
 </div>
 </body>

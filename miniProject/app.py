@@ -144,10 +144,11 @@ def view(num):
         user_info = db.users.find_one({"username": payload["id"]})
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
-        post = db.board.find_one({'num': int(num)}, {'_id': False})
+        post = db.board.find_one({'num': num}, {'_id': False})
 
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         status = post["nickname"] == user_info['nickname']
+
 
         return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status )
 
@@ -211,7 +212,7 @@ def insert_content():
 
     db.board.insert_one(doc)
 
-    return jsonify({'msg': "작성완료!"})
+    return jsonify({'msg': "작성완료!", 'num': num})
 
 
 # 포스트 삭제
@@ -234,8 +235,8 @@ def update_post(num):
         user_info = db.users.find_one({"username": payload["id"]})
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
-        post = db.board.find_one({'num': int(num)}, {'_id': False})
-
+        post = db.board.find_one({'num': num}, {'_id': False})
+        print(post)
         status = True
 
         return render_template('writeForm.html', user_info=user_info, status=status, post=post)
@@ -256,7 +257,7 @@ def update_content():
     nickname_receive = request.form['nickname_give']
     num_receive = request.form['num_give']
 
-    num = int(num_receive)
+    num = num_receive
 
     extension = file.filename.split('.')[-1]
 
@@ -268,16 +269,15 @@ def update_content():
     save_to = f'static/userImg/{filename}.{extension}'
     file.save(save_to)
 
-
-
+    
     db.board.update_one(
         {'num': num},
-        {'$set':
-             {'title': title_receive,
-              'nickname': nickname_receive,
-              'content': content_receive,
-              'file': f'{filename}.{extension}'}
-         }
+        {'$set': {
+            'title': title_receive,
+            'nickname': nickname_receive,
+            'content': content_receive,
+            'file': f'{filename}.{extension}'}
+        }
     )
 
     return jsonify({'msg': "수정완료!", 'num': num})

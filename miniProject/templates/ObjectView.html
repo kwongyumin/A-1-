@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <title>상세페이지</title>
-    <link rel="stylesheet" type="text/css" href="../static/ObjectView.css">
     <script>
         function delete_post(){
             $.ajax({
@@ -17,7 +16,6 @@
                     }
                 });
         }
-
 
         function update_post(num){
             window.location.href = "/api/update_post/"+num
@@ -51,6 +49,7 @@
                 {% endif %}
                 <div class="clear"></div>
             </div>
+
         </div>
     </div>
 </div>
