@@ -269,20 +269,17 @@ def update_content():
     file.save(save_to)
 
 
-    # 여기까지 완성!!!!!!!!
-    # 몽고db update 쿼리 알아내면됨!!!
-
     db.board.update_one(
         {'num': num},
-        {'$set': {
-            'title': title_receive,
-            'nickname': nickname_receive,
-            'content': content_receive,
-            'file': f'{filename}.{extension}'}
-        }
+        {'$set':
+             {'title': title_receive,
+              'nickname': nickname_receive,
+              'content': content_receive,
+              'file': f'{filename}.{extension}'}
+         }
     )
 
-    return jsonify({'msg': "작성완료!", 'num': num})
+    return jsonify({'msg': "수정완료!", 'num': num})
 
 
 
