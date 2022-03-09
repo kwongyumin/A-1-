@@ -269,10 +269,7 @@ def update_content():
     save_to = f'static/userImg/{filename}.{extension}'
     file.save(save_to)
 
-
-    # 여기까지 완성!!!!!!!!
-    # 몽고db update 쿼리 알아내면됨!!!
-
+    
     db.board.update_one(
         {'num': num},
         {'$set': {
