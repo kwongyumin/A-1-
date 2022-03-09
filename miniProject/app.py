@@ -148,7 +148,7 @@ def view(num):
         status = post["nickname"] == user_info['nickname']
 
         heart = {
-            "count_heart": db.likes.count_document({"num": num}),
+            "count_heart": db.likes.count_documents({"num": num}),
             "heart_by_me": bool(db.likes.find_one({"num": num, "username": user_info["username"]}))
         }
 
@@ -281,7 +281,7 @@ def update_content():
     return jsonify({'msg': "수정완료!", 'num': num})
 
 
-@app.route('/update_like', methods="POST")
+@app.route('/update_like', methods=["POST"])
 def update_like():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -302,9 +302,9 @@ def update_like():
         if action_receive == "like":
             db.likes.insert_one(doc)
         else:
-            db.likes.delete(doc)
+            db.likes.delete_one(doc)
 
-        count = db.likes.count_document({"num": num_receive})
+        count = db.likes.count_documents({"num": num_receive})
 
         return jsonify({"result": "success", "msg": "좋아요!", "count": count})
 
