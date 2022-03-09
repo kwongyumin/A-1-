@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
+    <title>글 작성</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+    <style>
+
+        * {
+            font-family: 'Poor Story', cursive;
+        }
+
+        .posting-box {
+            max-width: 500px;
+            margin-top: 20px;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .container {
+            padding-left: 50px;
+        }
+
+        .posting-box > .custom-file {
+            margin-bottom: 20px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+
+
+        function posting() {
+
+
+            let nickname = $('#nickname').text()
+            console.log("nickname"+nickname)
+
+            let title = $('#title').val()
+            let content = $("#content").val()
+            let num = Date.now()
+            let file = $('#file')[0].files[0]
+            let form_data = new FormData()
+
+
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("content_give", content)
+            form_data.append("nickname_give",nickname)
+            form_data.append("num_give",num)
+
+            $.ajax({
+                type: "POST",
+                url: "/write",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    alert(response["msg"])
+                    window.location.href="/"
+                }
+            });
+        }
+
+        function post_update(num) {
+
+
+            let nickname = $('#nickname').text()
+
+            let title = $('#up_title').val()
+            let content = $("#up_content").val()
+
+            let file = $('#up_file')[0].files[0]
+            let form_data = new FormData()
+
+
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("content_give", content)
+            form_data.append("nickname_give",nickname)
+            form_data.append("num_give",num)
+
+            $.ajax({
+                type: "POST",
+                url: "/write/update",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    alert(response["msg"])
+                    window.location.href="/ObjectView/" + response["num"]
+                }
+            });
+        }
+
+        function go_main(){
+            window.location.href="/"
+        }
+
+        {#수정페이지에서 돌아가기#}
+        function go_back(){
+            history.back();
+        }
+
+    </script>
+</head>
+
+<body>
+{% include('head.html') %}
+<div style="height:200px;"></div>
+<div class="wrap">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <p>글 작성!</p>
+            <p>작성자: <span id="nickname">{{ user_info.nickname }}</span></p>
+            <div class="posting-box">
+                {% if status == False %}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file">
+                        <label class="custom-file-label" for="file">사진 선택하기</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="title" placeholder="사진 제목">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="content" rows="3"
+                                  placeholder="내용 입력"></textarea>
+                    </div>
+                {% endif %}
+
+                {% if status == True %}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                        <label class="custom-file-label" for="file">사진 선택하기</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
+                    </div>
+                    <div class="form-group">
+                    <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
+                    </div>
+                {% endif %}
+                <div>
+                {% if status == True %}
+                    <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
+                    <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
+                {% else %}
+                    <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
+                    <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-columns" id="cards-box">
+    </div>
+</div>
+
+</body>
+
+</html>
