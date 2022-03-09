@@ -7,7 +7,6 @@
     <link href="../static/pinball.css" rel='stylesheet' type='text/css'/>
 
 
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="../static/img/fav-icon.png"/>
 
@@ -60,19 +59,19 @@
         });
     </script>
     <!----//End-dropdown--->
-<!--    Uncaught TypeError: $.removeCookie is not a function-->
+    <!--    Uncaught TypeError: $.removeCookie is not a function-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script>
         //로그아웃
-		function go_logout(){
-			$.removeCookie('mytoken');
-			alert('로그아웃!')
-			window.location.href='/login'
-		}
+        function go_logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
 
         //작성란으로 이동
-        function go_writeForm(nickname){
-            window.location.href = "/writeForm/"+nickname
+        function go_writeForm(nickname) {
+            window.location.href = "/writeForm/" + nickname
 
         }
 
@@ -90,13 +89,14 @@
         <div class="userinfo" style="display: inline-grid; width: 40%;">
             <div class="user" style="margin: auto;">
                 <ul style="float: right;">
-                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span style="margin: auto">{{ user_info.nickname }}</span></a></li>
+                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span
+                            style="margin: auto">{{ user_info.nickname }}</span></a></li>
                 </ul>
             </div>
-        <div class="btn">
-            <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
-            <button onclick="go_logout()">Logout</button>
-        </div>
+            <div class="btn">
+                <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
+                <button onclick="go_logout()">Logout</button>
+            </div>
         </div>
         <div class="clear"></div>
     </div>

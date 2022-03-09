@@ -3,22 +3,22 @@
 <head>
     <title>상세페이지</title>
     <script>
-        function delete_post(){
+        function delete_post() {
             $.ajax({
-                    type: "POST",
-                    url: `/api/delete_post`,
-                    data: {
-                        num_give: "{{ num }}"
-                    },
-                    success: function (response) {
-                        alert(response["msg"])
-                        window.location.href = "/"
-                    }
-                });
+                type: "POST",
+                url: `/api/delete_post`,
+                data: {
+                    num_give: "{{ num }}"
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = "/"
+                }
+            });
         }
 
-        function update_post(num){
-            window.location.href = "/api/update_post/"+num
+        function update_post(num) {
+            window.location.href = "/api/update_post/" + num
         }
     </script>
 </head>
@@ -40,12 +40,14 @@
                     </ul>
                 </div>
                 {% if status %}
-                <div class="share-artical">
-                    <ul>
-                        <li><a onclick="update_post({{ post.num }})"><img src="../static/img/facebooks.png" title="facebook">수정</a></li>
-                        <li><a onclick="delete_post()"><img src="../static/img/twiter.png" title="Twitter">삭제</a></li>
-                    </ul>
-                </div>
+                    <div class="share-artical">
+                        <ul>
+                            <li><a onclick="update_post({{ post.num }})"><img src="../static/img/facebooks.png"
+                                                                              title="facebook">수정</a></li>
+                            <li><a onclick="delete_post()"><img src="../static/img/twiter.png" title="Twitter">삭제</a>
+                            </li>
+                        </ul>
+                    </div>
                 {% endif %}
                 <div class="clear"></div>
             </div>
