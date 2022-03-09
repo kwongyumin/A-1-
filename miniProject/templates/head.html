@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
+    <link href="../static/index.css" rel='stylesheet' type='text/css'/>
     <link href="../static/pinball.css" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="../static/img/fav-icon.png"/>
@@ -81,11 +81,6 @@
 
     </script>
     <style>
-
-        header{
-            padding: 0;
-        }
-
          button{
 
             text-align: left;
@@ -154,20 +149,17 @@
 <div class="header">
     <div class="wrap">
         <div class="logobox">
-            <a class="logo" href="/"><img alt="logo" src="../static/img/logo.png" title="pinbal"/></a>
+            <a href="/"><img src="../static/img/logo.png" alt="pinball"/></a>
         </div>
-        <div class="userinfo">
-            <div class="user">
-                <ul>
-                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span>{{ user_info.nickname }}</span></a></li>
-                </ul>
+        <div class="headright" >
+            <div class="smilenickname">            
+                    <div><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span style="margin: auto">{{ user_info.nickname }}</span></a></div>
             </div>
-        <div class="btn">
-            <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
-            <button onclick="go_logout()">Logout</button>
+            <div class="btn">
+                <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
+                <button onclick="go_logout()">Logout</button>
+            </div>
         </div>
-        </div>
-        <div class="clear"></div>
     </div>
 </div>
 </body>

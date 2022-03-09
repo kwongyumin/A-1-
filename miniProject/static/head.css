@@ -1,40 +1,36 @@
 @charset "utf-8";
 
 .wrap {
+    position: relative;
     max-width: 1200px;
-    margin: 0 auto;
     clear: both;
+    margin: 0 auto;
 }
+
 
 .logobox{
+    margin: 0 auto;
     width: 110px;
 }
-.logo{
-    margin: 0 auto;
-}
 
-.userinfo{
-    display: block;
-    float: right;
+/* head 우상단 */
+
+.headright{
+    position: absolute;
+    right: 0;
     width: 40%;
     margin-right: 120px;
 }
 
-.userinfo::after{
-    clear: both;
-}
-
-.user{
-    margin: auto;
-}
-
-.user>ul{
-    display: block;
-    float: right;
+.smilenickname{
     margin: 0 auto;
 }
 
-ul>span{
-    margin: auto;
+.btn > button{
+    float: left;
+    margin: 0 auto;
 }
 
+.btm::after{
+    clear: both;
+}
