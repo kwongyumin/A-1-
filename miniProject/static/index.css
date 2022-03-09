@@ -10,15 +10,17 @@
 
 /* 슬라이드 배너 섹션 */
 .section{
-    padding: 190px 15px 15px 15px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 /* INPUT 가리기 */
 .section input[id*="slide"] {display:none;}
 
 /* 슬라이드 영역 - max-width 크기를 조절해주면 됩니다*/
+
 .section .slidewrap{
     width: 1200px;
     height: 600px;
@@ -26,7 +28,7 @@
     overflow: hidden;
 }
 .section .slidelist{
-    padding: 0px;
+    padding: 0;
     height: 600px;
     white-space: nowrap;
     font-size: 0;
@@ -85,6 +87,8 @@
     margin: 20px auto 0px auto;
     width: 95%;
     max-width: 1200px;
+    padding: 15px ;
+    background-color: rgba(248, 179, 255, 0.8);
 }
 
 .bottom{
