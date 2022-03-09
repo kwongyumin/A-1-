@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -25,6 +24,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <style>
+
 
 
         body {
@@ -192,8 +192,9 @@
 </head>
 
 <body>
+{% if status == false%}
 {% include('head.html') %}
-
+{% endif %}
 <div class="writewrap">
     <div style="height:200px;"></div>
     <div class="wrap" style=" max-width: 900px;
@@ -233,11 +234,14 @@
                     <div class="writebtn">
                         {% if status == True %}
                         <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
-                        <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
+                        <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">
+                            <input type="hidden" id="" value=""/>수정하기</button>
 
                         {% else %}
                         <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
                         <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
+                        <input type="hidden" onclick=""
+
                         {% endif %}
                     </div>
                 </div>
@@ -250,5 +254,3 @@
 
 
 </body>
-
-</html>

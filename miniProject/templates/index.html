@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
- <link href="../static/index.css" rel='stylesheet' type='text/css'/>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
 
 <script>
 
@@ -14,62 +16,63 @@
 
 <body>
 {% include('head.html') %}
+	<div class="section">
+			<input type="radio" name="slide" id="slide01" checked>
+			<input type="radio" name="slide" id="slide02">
+			<input type="radio" name="slide" id="slide03">
 
-<div class="section">
-		<input type="radio" name="slide" id="slide01" checked>
-		<input type="radio" name="slide" id="slide02">
-		<input type="radio" name="slide" id="slide03">
+			<div class="slidewrap">
+				<ul class="slidelist">
+					<li>
+						<a>
+							<label for="slide03" class="left"></label>
+							<img src="../static/img/test1.jpg">
+							<label for="slide02" class="right"></label>
+						</a>
+					</li>
+					<li>
+						<a>
+							<label for="slide01" class="left"></label>
+							<img src="../static/img/test2.jpg">
+							<label for="slide03" class="right"></label>
+						</a>
+					</li>
+					<li>
+						<a>
+							<label for="slide02" class="left"></label>
+							<img src="../static/img/test1.jpg">
+							<label for="slide01" class="right"></label>
+						</a>
+					</li>
+				</ul>
+			</div>
+	</div>
 
-		<div class="slidewrap">
-			<ul class="slidelist">
-				<li>
-					<a>
-						<label for="slide03" class="left"></label>
-						<img src="../static/img/test1.jpg">
-						<label for="slide02" class="right"></label>
-					</a>
-				</li>
-				<li>
-					<a>
-						<label for="slide01" class="left"></label>
-						<img src="../static/img/test2.jpg">
-						<label for="slide03" class="right"></label>
-					</a>
-				</li>
-				<li>
-					<a>
-						<label for="slide02" class="left"></label>
-						<img src="../static/img/test1.jpg">
-						<label for="slide01" class="right"></label>
-					</a>
-				</li>
-            </ul>
-        </div>
-</div>
+	<div class="mycards">
+		<div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+			{% for boardList in boardlist %}
+			<div class="col">
+				<div class="card h-100">
 
-<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-		{% for boardList in boardlist %}
-		<div class="col">
-			<div class="card h-100">
+					<img src="/static/userimg/{{boardList.file}}"
+						 class="card-img-top"
+						 style="width: 300px;
+										   height: 150px;
+										   object-fit: cover;">
+					<div class="card-body">
+						<h5 class="card-title"
+							style="font-size: 18px">{{boardList.title}}</h5>
+						<h5 class="card-title"
+							style="font-size: 18px">{{boardList.nickname}}</h5>
 
-				<img src="/static/userimg/{{boardList.file}}"
-					 class="card-img-top"
-					 style="width: 300px;
-                                       height: 150px;
-                                       object-fit: cover;">
-				<div class="card-body">
-					<h5 class="card-title"
-						style="font-size: 18px">{{boardList.title}}</h5>
-					<h5 class="card-title"
-						style="font-size: 18px">{{boardList.nickname}}</h5>
-
-					<p class="mycomment"><button  onclick="go_view({{boardList.num}})" type="button">자세히 보기</button></p>
+						<p class="mycomment"><button  onclick="go_view({{boardList.num}})" type="button">자세히 보기</button></p>
+					</div>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
+	<div class="bottom">
 </div>
 
 </body>
