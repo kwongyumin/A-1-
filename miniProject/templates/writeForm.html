@@ -32,19 +32,32 @@
             font-family: 'Poor Story', cursive;
         }
 
+        body {
+            min-height: 100vh;
+            padding-top: 80px;
+            background-image: url(../static/img/test2.jpg);
+            background-clip: border-box;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .order {
+            width: 500px;
+            margin: 60px auto 0px auto;
+            padding-bottom: 60px;
+        }
+
+
         .posting-box {
             max-width: 500px;
             margin-top: 20px;
         }
 
         .wrap {
-            width: 900px;
+            max-width: 900px;
             margin: auto;
         }
 
-        .container {
-            padding-left: 50px;
-        }
 
         .posting-box > .custom-file {
             margin-bottom: 20px;
@@ -61,7 +74,7 @@
 
 
             let nickname = $('#nickname').text()
-            console.log("nickname"+nickname)
+            console.log("nickname" + nickname)
 
             let title = $('#title').val()
             let content = $("#content").val()
@@ -73,8 +86,8 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give",nickname)
-            form_data.append("num_give",num)
+            form_data.append("nickname_give", nickname)
+            form_data.append("num_give", num)
 
             $.ajax({
                 type: "POST",
@@ -86,7 +99,7 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href="/"
+                    window.location.href = "/"
                 }
             });
         }
@@ -106,8 +119,8 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give",nickname)
-            form_data.append("num_give",num)
+            form_data.append("nickname_give", nickname)
+            form_data.append("num_give", num)
 
             $.ajax({
                 type: "POST",
@@ -119,17 +132,18 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href="/ObjectView/" + response["num"]
+                    window.location.href = "/ObjectView/" + response["num"]
                 }
             });
         }
 
-        function go_main(){
-            window.location.href="/"
+        function go_main() {
+            window.location.href = "/"
         }
 
         {#수정페이지에서 돌아가기#}
-        function go_back(){
+
+        function go_back() {
             history.back();
         }
 
@@ -137,54 +151,55 @@
 </head>
 
 <body>
-{% include('head.html') %}
-<div style="height:200px;"></div>
+
+
 <div class="wrap">
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <p>글 작성!</p>
-            <p>작성자: <span id="nickname">{{ user_info.nickname }}</span></p>
-            <div class="posting-box">
-                {% if status == False %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file">
-                        <label class="custom-file-label" for="file">사진 선택하기</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="title" placeholder="사진 제목">
-                    </div>
-                    <div class="form-group">
+    <div class="order">
+        <h1> 글 남기기📑 </h1>
+                <h3>작성자: <span id="nickname">{{ user_info.nickname }}</span></h3>
+                <p>추억을 공유해주세요!</p>
+
+                <div class="posting-box">
+                    {% if status == False %}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file">
+                            <label class="custom-file-label" for="file">사진 선택하기</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="title" placeholder="사진 제목">
+                        </div>
+                        <div class="form-group">
                         <textarea class="form-control" id="content" rows="3"
                                   placeholder="내용 입력"></textarea>
-                    </div>
-                {% endif %}
+                        </div>
+                    {% endif %}
 
-                {% if status == True %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
-                        <label class="custom-file-label" for="file">사진 선택하기</label>
+                    {% if status == True %}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                            <label class="custom-file-label" for="file">사진 선택하기</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
+                        </div>
+                    {% endif %}
+                    <div>
+                        {% if status == True %}
+                            <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기
+                            </button>
+                            <button onclick="go_back()" type="button" class="btn btn-secondary">돌아가기</button>
+                        {% else %}
+                            <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
+                            <button onclick="go_main()" type="button" class="btn btn-secondary">돌아가기</button>
+                        {% endif %}
                     </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
-                    </div>
-                    <div class="form-group">
-                    <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
-                    </div>
-                {% endif %}
-                <div>
-                {% if status == True %}
-                    <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
-                    <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
-                {% else %}
-                    <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
-                    <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
-                {% endif %}
                 </div>
-            </div>
-        </div>
     </div>
-    <div class="card-columns" id="cards-box">
-    </div>
+</div>
+</div>
 </div>
 
 </body>
