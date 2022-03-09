@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+.wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    clear: both;
+}
+
+.logobox{
+    width: 110px;
+}
+.logo{
+    margin: 0 auto;
+}
+
+.userinfo{
+    display: block;
+    float: right;
+    width: 40%;
+    margin-right: 120px;
+}
+
+.userinfo::after{
+    clear: both;
+}
+
+.user{
+    margin: auto;
+}
+
+.user>ul{
+    display: block;
+    float: right;
+    margin: 0 auto;
+}
+
+ul>span{
+    margin: auto;
+}
+

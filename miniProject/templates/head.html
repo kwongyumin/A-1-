@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="../static/pinball.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="../static/img/fav-icon.png"/>
+
+    <!-- 부트스트랩 템플릿 / jQuery -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
+
+    <script type="application/x-javascript">
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!----webfonts---->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!----//webfonts---->
+    <!---start-click-drop-down-menu----->
+    <script src="../static/js/jquery.min.js"></script>
+    <!----start-dropdown--->
+    <script type="text/javascript">
+        var $ = jQuery.noConflict();
+        $(function () {
+            $('#activator').click(function () {
+                $('#box').animate({'top': '0px'}, 500);
+            });
+            $('#boxclose').click(function () {
+                $('#box').animate({'top': '-700px'}, 500);
+            });
+        });
+        $(document).ready(function () {
+            //Hide (Collapse) the toggle containers on load
+            $(".toggle_container").hide();
+            //Switch the "Open" and "Close" state per click then slide up/down (depending on open/close state)
+            $(".trigger").click(function () {
+                $(this).toggleClass("active").next().slideToggle("slow");
+                return false; //Prevent the browser jump to the link anchor
+            });
+
+        });
+    </script>
+    <!----//End-dropdown--->
+<!--    Uncaught TypeError: $.removeCookie is not a function-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+        //로그아웃
+		function go_logout(){
+			$.removeCookie('mytoken');
+			alert('로그아웃!')
+			window.location.href='/login'
+		}
+
+        //작성란으로 이동
+        function go_writeForm(nickname){
+            window.location.href = "/writeForm/"+nickname
+
+        }
+
+        function  go_view(num){
+            let num_title = num
+			//url += num
+			window.location.href="/ObjectView/" + num_title
+        }
+
+
+    </script>
+    <style>
+
+        header{
+            padding: 0;
+        }
+
+         button{
+
+            text-align: left;
+            width: 120px;
+            height: 40px;
+
+            background-color: transparent;
+            color: gray;
+
+
+            border: none;
+
+            margin-top: 10px;
+            margin-right: 5px;
+
+            font-weight: bold;
+			transition-duration: 0.5s;
+        }
+        button:hover {
+            text-align: center;
+            border-radius: 15px;
+            border: 1px solid white;
+
+            background-color: dodgerblue;
+			transition-duration: 0.5s;
+			color: white;
+        }
+
+        /* 상위 헤더 버튼 */
+        .btn{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+
+        .btn > button {
+            text-align: center;
+            width: 135px;
+            height: 40px;
+
+            background-color: transparent;
+            color: lightgray;
+
+            border-radius: 25px;
+            border: 2px solid lightgray;
+
+            margin-top: 10px;
+            margin-right: 5px;
+
+            font-weight: bold;
+			transition-duration: 0.5s;
+
+        }
+
+        .btn > button:hover {
+            border: 2px solid white;
+            background-color: dodgerblue;
+			transition-duration: 0.5s;
+			color: white;
+        }
+    </style>
+</head>
+<body>
+<!---start-header---->
+<div class="header">
+    <div class="wrap">
+        <div class="logobox">
+            <a class="logo" href="/"><img alt="logo" src="../static/img/logo.png" title="pinbal"/></a>
+        </div>
+        <div class="userinfo">
+            <div class="user">
+                <ul>
+                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span>{{ user_info.nickname }}</span></a></li>
+                </ul>
+            </div>
+        <div class="btn">
+            <button onclick="go_writeForm('{{ user_info.nickname }}')">Travel Review</button>
+            <button onclick="go_logout()">Logout</button>
+        </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

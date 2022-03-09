@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>상세페이지</title>
+    <link rel="stylesheet" type="text/css" href="../static/ObjectView.css">
+    <script>
+        function delete_post(){
+            $.ajax({
+                    type: "POST",
+                    url: `/api/delete_post`,
+                    data: {
+                        num_give: "{{ num }}"
+                    },
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.href = "/"
+                    }
+                });
+        }
+
+
+        function update_post(num){
+            window.location.href = "/api/update_post/"+num
+        }
+    </script>
+</head>
+<body>
+{% include('head.html') %}
+<div class="content">
+    <div class="wrap">
+        <div class="single-page">
+            <div class="single-page-artical">
+                <div class="artical-content">
+                    <img src="../static/userImg/{{ post.file }}" title="banner1">
+                    <h2>{{ post.title }}</h2>
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="artical-links">
+                    <ul>
+                        <li><a href="#"><img src="../static/img/blog-icon3.png"
+                                             title="Comments"><span>No comments</span></a></li>
+                    </ul>
+                </div>
+                {% if status %}
+                <div class="share-artical">
+                    <ul>
+                        <li><a onclick="update_post({{ post.num }})"><img src="../static/img/facebooks.png" title="facebook">수정</a></li>
+                        <li><a onclick="delete_post()"><img src="../static/img/twiter.png" title="Twitter">삭제</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
