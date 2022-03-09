@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+ <link href="../static/index.css" rel='stylesheet' type='text/css'/>
+
+<script>
+
+        function  go_view(num){
+            let num_title = num
+			//url += num
+			window.location.href="/ObjectView/" + num_title
+        }
+
+</script>
 
 <body>
 {% include('head.html') %}
