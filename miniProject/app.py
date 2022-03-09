@@ -257,7 +257,7 @@ def update_content():
     nickname_receive = request.form['nickname_give']
     num_receive = request.form['num_give']
 
-    num = int(num_receive)
+    num = num_receive
 
     extension = file.filename.split('.')[-1]
 
