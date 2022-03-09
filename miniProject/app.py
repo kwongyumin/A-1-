@@ -33,7 +33,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', nickname=user_info["nick"])
+        return render_template('index.html', nickname=user_info["nickname"], user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -103,10 +103,6 @@ def check_nick():
 # ------------------------------------------------여기까지가 로그인 관련 -------------------------------------------
 
 
-# 해당 url 요청 -> 메인페이지 렌더링
-@app.route('/main')
-def main():
-    return render_template('index.html')
 
 
 # 작성폼으로 렌더링
@@ -118,8 +114,30 @@ def write():
 # 단일객체 렌더링
 @app.route('/ObjectView/<num>')
 def view(num):
-    post = db.board.find_one({'num': int(num)}, {'_id': False})
-    return render_template('ObjectView.html', post=post, num=num)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        # 쿠키에 있는 유저의 정보를 읽어옴
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)
+
+        # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
+        user_info = db.users.find_one({"username": payload["id"]})
+        print(user_info)
+
+        # board db에서 해당 num값에 해당하는 dic 찾아오기
+        post = db.board.find_one({'num': int(num)}, {'_id': False})
+        print(post)
+
+        # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
+        # 외래키를 nick으로 설정하면 post["nick"]으로 변경해야함
+        status = post["nickname"] == user_info['nickname']
+
+        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 # 회원가입 폼으로 렌더링, 토글은 아직 사용 안함,
@@ -142,6 +160,9 @@ def board_list():
 
 @app.route('/write', methods=['POST'])
 def insert_content():
+
+
+
     # 넘버링
     count = list(db.board.find({}, {'_id': False}))
     num = len(count) + 1
@@ -150,10 +171,11 @@ def insert_content():
     file = request.files["file_give"]
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
+    nickname_receive = request.form['nickname_give']
 
     extension = file.filename.split('.')[-1]
 
-    today = datetime.datetime.now()
+    today = datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
     filename = f'file-{mytime}'
@@ -164,13 +186,15 @@ def insert_content():
     doc = {
         'num': num,
         'title': title_receive,
+        'nickname':nickname_receive,
         'content': content_receive,
         'file': f'{filename}.{extension}'
+
     }
 
     db.board.insert_one(doc)
 
-    return jsonify({'msg': '작성 완료!'})
+    return jsonify({'msg': "작성완료!"})
 
 # 포스트 삭제
 @app.route('/api/delete_post', methods=['POST'])
@@ -179,7 +203,16 @@ def delete_word():
     db.board.delete_one({"num": int(num_receive)})
     return jsonify({'result': 'success', 'msg': '포스트 삭제ㅠ'})
 
+@app.route('/go_write', methods=['POST'])
+def response_token():
 
+    token_receive = request.cookies.get('mytoken')
+
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({"username": payload["id"]})
+    nick = user_info['nickname']
+
+    return jsonify({'nickname': nick})
 
 
 
