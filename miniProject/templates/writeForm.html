@@ -1,15 +1,14 @@
 <!doctype html>
 <html lang="en">
 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -25,32 +24,88 @@
     <title>글 작성</title>
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-
     <style>
 
-        * {
-            font-family: 'Poor Story', cursive;
+
+        body {
+            min-height: 100vh;
+            padding-top: 80px;
+            background-image: url(../static/img/test2.jpg);
+            background-clip: border-box;
+            background-size: cover;
+            background-position: center;
         }
 
-        .posting-box {
-            max-width: 500px;
-            margin-top: 20px;
+        .writewrap{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+
+        }
+        .writewrap > posting-box{
+            align-items: center;
+        }
+        .jumbotron-fluid{
+                padding-right: 110px;
+                padding-left: 110px;
+
+        }
+       .container > h1{
+            font-size: 30px;
+
+        }
+       .container > h3{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 30px;
         }
 
-        .wrap {
-            width: 900px;
-            margin: auto;
+        textarea.form-control {
+            height: 200px;
+
+        }
+        input[type="text"] {
+
+            all: unset;
+			padding: 10px;
+			font-size: 18px;
+			border: 0;
+			width: 96.8%;
+			border-bottom: 2px solid gray;
+		}
+
+        .writebtn{
+            display: flex;
+            justify-content: space-between;
         }
 
-        .container {
-            padding-left: 50px;
+
+        .writebtn > button{
+
+            background-color: cornflowerblue;
+			color: white;
+			font-size: 17px;
+			border: 0;
+			border-radius: 18px;
+			width: 120px;
+			height: 40px;
+			font-weight: bold;
+			transition-duration: 0.5s;
+			cursor: pointer;
+        }
+        .writebtn > button:hover {
+
+            background-color: white;
+			transition-duration: 0.5s;
+			color: gray;
         }
 
-        .posting-box > .custom-file {
-            margin-bottom: 20px;
-        }
 
     </style>
+
+
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init()
@@ -138,28 +193,32 @@
 
 <body>
 {% include('head.html') %}
-<div style="height:200px;"></div>
-<div class="wrap">
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <p>글 작성!</p>
-            <p>작성자: <span id="nickname">{{ user_info.nickname }}</span></p>
-            <div class="posting-box">
-                {% if status == False %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file">
-                        <label class="custom-file-label" for="file">사진 선택하기</label>
-                    </div>
+
+<div class="writewrap">
+    <div style="height:200px;"></div>
+    <div class="wrap" style=" max-width: 900px;
+                            margin: auto;">
+        <div class="jumbotron jumbotron-fluid" style=" background-color: rgb(10 10 10 / 0%);">
+            <div class="container">
+                <h1 > 여행 후기📑 </h1>
+                <h3 >작성자: <span id="nickname">{{ user_info.nickname }}</span></h3>
+                <div class="posting-box" >
+                    {% if status == False %}
                     <div class="form-group">
-                        <input type="email" class="form-control" id="title" placeholder="사진 제목">
+                        <input type="text" class="form-control" id="title" placeholder="사진 제목">
                     </div>
+                    <div class="custom-file"  style="margin-bottom: 20px;">
+                        <input type="file" class="custom-file-input" id="file">
+                        <label class="custom-file-label" for="file">사진 저장하기!</label>
+                    </div>
+
                     <div class="form-group">
                         <textarea class="form-control" id="content" rows="3"
-                                  placeholder="내용 입력"></textarea>
+                                  placeholder="여행 후기를 남겨주세요!"></textarea>
                     </div>
-                {% endif %}
+                    {% endif %}
 
-                {% if status == True %}
+                    {% if status == True %}
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
                         <label class="custom-file-label" for="file">사진 선택하기</label>
@@ -168,24 +227,27 @@
                         <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
                     </div>
                     <div class="form-group">
-                    <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
+                        <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
                     </div>
-                {% endif %}
-                <div>
-                {% if status == True %}
-                    <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
-                    <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
-                {% else %}
-                    <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
-                    <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
-                {% endif %}
+                    {% endif %}
+                    <div class="writebtn">
+                        {% if status == True %}
+                        <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
+                        <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
+
+                        {% else %}
+                        <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
+                        <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-columns" id="cards-box">
+        <div class="card-columns" id="cards-box">
+        </div>
     </div>
 </div>
+
 
 </body>
 
