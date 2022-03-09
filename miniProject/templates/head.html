@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/head.css">
     <link href="../static/pinball.css" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="../static/img/fav-icon.png"/>
@@ -71,6 +72,11 @@
         }
     </script>
     <style>
+
+        header{
+            padding: 0;
+        }
+
          button{
 
             text-align: left;
@@ -138,13 +144,13 @@
 <!---start-header---->
 <div class="header">
     <div class="wrap">
-        <div class="logo" style="width: 55%;">
-            <a href="/" style="float: right;"><img src="../static/img/logo.png" title="pinbal"/></a>
+        <div class="logobox">
+            <a class="logo" href="/"><img alt="logo" src="../static/img/logo.png" title="pinbal"/></a>
         </div>
-        <div class="userinfo" style="display: inline-grid; width: 40%;">
-            <div class="user" style="margin: auto;">
-                <ul style="float: right;">
-                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span style="margin: auto">{{ user_info.nickname }}</span></a></li>
+        <div class="userinfo">
+            <div class="user">
+                <ul>
+                    <li><a href="#"><img src="../static/img/user-pic.png" title="user-name"/><span>{{ user_info.nickname }}</span></a></li>
                 </ul>
             </div>
         <div class="btn">

@@ -25,7 +25,7 @@
 
         /* 슬라이드 배너 섹션 */
         .section{
-            padding: 15px;
+			margin-top: 155.98px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -38,7 +38,7 @@
         .section .slidelist {white-space:nowrap;font-size:0;}
         .section .slidelist > li {display:inline-block;vertical-align:middle;width:100%;transition:all .5s;}
         .section .slidelist > li > a {display:block;position:relative;}
-        .section .slidelist > li > a img {width:100%;}
+        .section .slidelist > li > a img {width:100%; height: 100%; object-fit: cover;}
 
         /* 좌우로 넘기는 LABEL버튼에 대한 스타일 */
         .section .slidelist label {position:absolute;z-index:1;top:45%;transform:translateY(-50%);padding:50px;cursor:pointer;}
@@ -50,12 +50,27 @@
         .section input[id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-100%);}
         .section input[id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-200%);}
 
+
+		.slidebox{
+			height: 400px;
+		}
+
+		.slidepics{
+			height: 400px;
+		}
+
+		.slidepics > a{
+			height: 400px;
+		}
+
+		footer{
+			max-width: 1200px;
+			height: 180px;
+			color: rgba(0,0,0,0.7)
+		}
+
         /* 포스팅 카드 너비조절 */
-       .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
+		.mycards {margin: 20px auto 0px auto;width: 95%;max-width: 1200px;}
 
     </style>
 
@@ -120,44 +135,44 @@
 <body>
 {% include('head.html') %}
 
-<div class="section">
-		<input type="radio" name="slide" id="slide01" checked>
-		<input type="radio" name="slide" id="slide02">
-		<input type="radio" name="slide" id="slide03">
+	<div class="section">
+			<input type="radio" name="slide" id="slide01" checked>
+			<input type="radio" name="slide" id="slide02">
+			<input type="radio" name="slide" id="slide03">
 
-		<div class="slidewrap">
-			<ul class="slidelist">
-				<li>
-					<a>
-						<label for="slide03" class="left"></label>
-						<img src="../static/img/test1.jpg">
-						<label for="slide02" class="right"></label>
-					</a>
-				</li>
-				<li>
-					<a>
-						<label for="slide01" class="left"></label>
-						<img src="../static/img/test2.jpg">
-						<label for="slide03" class="right"></label>
-					</a>
-				</li>
-				<li>
-					<a>
-						<label for="slide02" class="left"></label>
-						<img src="../static/img/test1.jpg">
-						<label for="slide01" class="right"></label>
-					</a>
-				</li>
-            </ul>
-        </div>
-</div>
+			<div class="slidewrap">
+				<ul class="slidelist slidebox">
+					<li class="slidepics">
+						<a>
+							<label for="slide03" class="left"></label>
+							<img src="../static/img/test1.jpg">
+							<label for="slide02" class="right"></label>
+						</a>
+					</li>
+					<li class="slidepics">
+						<a>
+							<label for="slide01" class="left"></label>
+							<img src="../static/img/test2.jpg">
+							<label for="slide03" class="right"></label>
+						</a>
+					</li>
+					<li class="slidepics">
+						<a>
+							<label for="slide02" class="left"></label>
+							<img src="../static/img/test1.jpg">
+							<label for="slide01" class="right"></label>
+						</a>
+					</li>
+				</ul>
+			</div>
+	</div>
+	<div class="mycards">
+		<div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
 
-<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-
-    </div>
-</div>
-
+		</div>
+	</div>
+	<footer class="nocontents">
+	</footer>
 </body>
 </html>
 

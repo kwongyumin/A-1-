@@ -265,8 +265,9 @@ def update_content():
 
     # 여기까지 완성!!!!!!!!
     # 몽고db update 쿼리 알아내면됨!!!
-    db.users.update_one({'name': 'bobby'}, {'$set': {'age': 19}})
-    db.board.update(
+    #
+    # db.users.update_one({'name': 'bobby'}, {'$set': {'age': 19}})
+    db.board.update_one(
         {'num': num},
         {'$set': {
             'title': title_receive,
