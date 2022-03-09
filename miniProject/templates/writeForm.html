@@ -1,15 +1,14 @@
 <!doctype html>
 <html lang="en">
 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -25,12 +24,8 @@
     <title>글 작성</title>
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-
     <style>
 
-        * {
-            font-family: 'Poor Story', cursive;
-        }
 
         body {
             min-height: 100vh;
@@ -41,29 +36,76 @@
             background-position: center;
         }
 
-        .order {
-            width: 500px;
-            margin: 60px auto 0px auto;
-            padding-bottom: 60px;
+        .writewrap{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+
+        }
+        .writewrap > posting-box{
+            align-items: center;
+        }
+        .jumbotron-fluid{
+                padding-right: 110px;
+                padding-left: 110px;
+
+        }
+       .container > h1{
+            font-size: 30px;
+
+        }
+       .container > h3{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        textarea.form-control {
+            height: 200px;
+
+        }
+        input[type="text"] {
+
+            all: unset;
+			padding: 10px;
+			font-size: 18px;
+			border: 0;
+			width: 96.8%;
+			border-bottom: 2px solid gray;
+		}
+
+        .writebtn{
+            display: flex;
+            justify-content: space-between;
         }
 
 
-        .posting-box {
-            max-width: 500px;
-            margin-top: 20px;
+        .writebtn > button{
+
+            background-color: cornflowerblue;
+			color: white;
+			font-size: 17px;
+			border: 0;
+			border-radius: 18px;
+			width: 120px;
+			height: 40px;
+			font-weight: bold;
+			transition-duration: 0.5s;
+			cursor: pointer;
+        }
+        .writebtn > button:hover {
+
+            background-color: white;
+			transition-duration: 0.5s;
+			color: gray;
         }
 
-        .wrap {
-            max-width: 900px;
-            margin: auto;
-        }
-
-
-        .posting-box > .custom-file {
-            margin-bottom: 20px;
-        }
 
     </style>
+
+
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init()
@@ -74,7 +116,7 @@
 
 
             let nickname = $('#nickname').text()
-            console.log("nickname" + nickname)
+            console.log("nickname"+nickname)
 
             let title = $('#title').val()
             let content = $("#content").val()
@@ -86,8 +128,8 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give", nickname)
-            form_data.append("num_give", num)
+            form_data.append("nickname_give",nickname)
+            form_data.append("num_give",num)
 
             $.ajax({
                 type: "POST",
@@ -99,7 +141,7 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href = "/"
+                    window.location.href="/ObjectView/" + response["num"]
                 }
             });
         }
@@ -119,8 +161,8 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give", nickname)
-            form_data.append("num_give", num)
+            form_data.append("nickname_give",nickname)
+            form_data.append("num_give",num)
 
             $.ajax({
                 type: "POST",
@@ -132,18 +174,17 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href = "/ObjectView/" + response["num"]
+                    window.location.href="/ObjectView/" + response["num"]
                 }
             });
         }
 
-        function go_main() {
-            window.location.href = "/"
+        function go_main(){
+            window.location.href="/"
         }
 
         {#수정페이지에서 돌아가기#}
-
-        function go_back() {
+        function go_back(){
             history.back();
         }
 
@@ -151,56 +192,62 @@
 </head>
 
 <body>
+{% include('head.html') %}
 
-
-<div class="wrap">
-    <div class="order">
-        <h1> 글 남기기📑 </h1>
-                <h3>작성자: <span id="nickname">{{ user_info.nickname }}</span></h3>
-                <p>추억을 공유해주세요!</p>
-
-                <div class="posting-box">
+<div class="writewrap">
+    <div style="height:200px;"></div>
+    <div class="wrap" style=" max-width: 900px;
+                            margin: auto;">
+        <div class="jumbotron jumbotron-fluid" style=" background-color: rgb(10 10 10 / 0%);">
+            <div class="container">
+                <h1 > 여행 후기📑 </h1>
+                <h3 >작성자: <span id="nickname">{{ user_info.nickname }}</span></h3>
+                <div class="posting-box" >
                     {% if status == False %}
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file">
-                            <label class="custom-file-label" for="file">사진 선택하기</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="title" placeholder="사진 제목">
-                        </div>
-                        <div class="form-group">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="title" placeholder="사진 제목">
+                    </div>
+                    <div class="custom-file"  style="margin-bottom: 20px;">
+                        <input type="file" class="custom-file-input" id="file">
+                        <label class="custom-file-label" for="file">사진 저장하기!</label>
+                    </div>
+
+                    <div class="form-group">
                         <textarea class="form-control" id="content" rows="3"
-                                  placeholder="내용 입력"></textarea>
-                        </div>
+                                  placeholder="여행 후기를 남겨주세요!"></textarea>
+                    </div>
                     {% endif %}
 
                     {% if status == True %}
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
-                            <label class="custom-file-label" for="file">사진 선택하기</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
-                        </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                        <label class="custom-file-label" for="file">사진 선택하기</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="up_title" value="{{ post.title }}">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
+                    </div>
                     {% endif %}
-                    <div>
+                    <div class="writebtn">
                         {% if status == True %}
-                            <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기
-                            </button>
-                            <button onclick="go_back()" type="button" class="btn btn-secondary">돌아가기</button>
+                        <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
+                        <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">수정하기</button>
+
                         {% else %}
-                            <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
-                            <button onclick="go_main()" type="button" class="btn btn-secondary">돌아가기</button>
+                        <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
+                        <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
                         {% endif %}
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card-columns" id="cards-box">
+        </div>
     </div>
 </div>
-</div>
-</div>
+
 
 </body>
 
