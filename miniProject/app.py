@@ -212,7 +212,7 @@ def insert_content():
 
     db.board.insert_one(doc)
 
-    return jsonify({'msg': "작성완료!"})
+    return jsonify({'msg': "작성완료!", 'num': num})
 
 
 # 포스트 삭제
@@ -283,7 +283,7 @@ def update_content():
         }
     )
 
-    return jsonify({'msg': "작성완료!", 'num': num})
+    return jsonify({'msg': "수정완료!", 'num': num})
 
 
 
