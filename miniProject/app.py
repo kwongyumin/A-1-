@@ -147,7 +147,12 @@ def view(num):
         # 쿠키에 있는 유저의 아이디와 board에 있는 게시물의 id가 같으면 Ture
         status = post["nickname"] == user_info['nickname']
 
-        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status)
+        heart = {
+            "count_heart": db.likes.count_documents({"num": num}),
+            "heart_by_me": bool(db.likes.find_one({"num": num, "username": user_info["username"]}))
+        }
+
+        return render_template('ObjectView.html', user_info=user_info, post=post, num=num, status=status, heart=heart)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -161,9 +166,8 @@ def register():
     return render_template('register.html')
 
 
-##
-
 # ------------------------------------------------기능구현 API ---------------------------------------------------
+
 
 # 전체 후기 조회 /Get방식 메서드를 이용 새로고침 시 전체목록을 가져온다.
 # DB에 더미데이터 집어넣어서 확인하기
@@ -276,6 +280,39 @@ def update_content():
     )
 
     return jsonify({'msg': "수정완료!", 'num': num})
+
+
+@app.route('/update_like', methods=["POST"])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        # 쿠키에 있는 유저의 정보를 읽어옴
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        # 읽어온 유저의 id를 통해서 db에서 나머지 정보 찾기
+        user_info = db.users.find_one({"username": payload["id"]})
+
+        action_receive = request.form['action_give']
+        num_receive = request.form['num_give']
+
+        doc = {
+            "num": num_receive,
+            "username": user_info["username"]
+        }
+
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+
+        count = db.likes.count_documents({"num": num_receive})
+
+        return jsonify({"result": "success", "msg": "좋아요!", "count": count})
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 if __name__ == '__main__':
