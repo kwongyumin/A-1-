@@ -20,11 +20,10 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 
-    <title>글 작성</title>
+    <title>글 쓰기</title>
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <style>
-
 
 
         body {
@@ -36,45 +35,46 @@
             background-position: center;
         }
 
-        .writewrap{
+        .writewrap {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+        }
+
+        .jumbotron-fluid {
+            padding-right: 110px;
+            padding-left: 110px;
+        }
 
 
-        }
-        .writewrap > posting-box{
-            align-items: center;
-        }
-        .jumbotron-fluid{
-                padding-right: 110px;
-                padding-left: 110px;
-
-        }
-       .container > h1{
+        .container > h1 {
             font-size: 30px;
+            font-family: 'Poor Story', cursive;
 
         }
-       .container > h3{
+
+        .container > h3 {
             margin-top: 10px;
             margin-bottom: 10px;
-            font-size: 30px;
+            font-size: 20px;
+            font-family: 'Poor Story', cursive;
         }
 
         textarea.form-control {
             height: 200px;
-
+            font-family: 'Poor Story', cursive;
         }
+
         input[type="text"] {
 
             all: unset;
-			padding: 10px;
-			font-size: 18px;
-			border: 0;
-			width: 96.8%;
-			border-bottom: 2px solid gray;
-		}
+            padding: 10px;
+            font-size: 18px;
+            border: 0;
+            width: 96.8%;
+            border-bottom: 2px solid gray;
+        }
 
         .writebtn{
             display: flex;
@@ -84,8 +84,6 @@
 
         .writebtn > button{
 
-            background-color: cornflowerblue;
-			color: white;
 			font-size: 17px;
 			border: 0;
 			border-radius: 18px;
@@ -116,7 +114,7 @@
 
 
             let nickname = $('#nickname').text()
-            console.log("nickname"+nickname)
+            console.log("nickname" + nickname)
 
             let title = $('#title').val()
             let content = $("#content").val()
@@ -128,7 +126,7 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give",nickname)
+            form_data.append("nickname_give", nickname)
             form_data.append("num_give", num)
 
             $.ajax({
@@ -141,7 +139,7 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href="/ObjectView/" + response["num"]
+                    window.location.href = "/ObjectView/" + response["num"]
                 }
             });
         }
@@ -161,8 +159,8 @@
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
-            form_data.append("nickname_give",nickname)
-            form_data.append("num_give",num)
+            form_data.append("nickname_give", nickname)
+            form_data.append("num_give", num)
 
             $.ajax({
                 type: "POST",
@@ -174,17 +172,18 @@
                 success: function (response) {
 
                     alert(response["msg"])
-                    window.location.href="/ObjectView/" + response["num"]
+                    window.location.href = "/ObjectView/" + response["num"]
                 }
             });
         }
 
-        function go_main(){
-            window.location.href="/"
+        function go_main() {
+            window.location.href = "/"
         }
 
         {#수정페이지에서 돌아가기#}
-        function go_back(){
+
+        function go_back() {
             history.back();
         }
 
@@ -196,64 +195,79 @@
 {% include('head.html') %}
 
 <div class="writewrap">
-    <div style="height:200px;"></div>
-    <div class="wrap" style=" max-width: 900px;
-                            margin: auto;">
-        <div class="jumbotron jumbotron-fluid" style=" background-color: rgb(10 10 10 / 0%);">
-            <div class="container">
-                <h1 > 여행 후기📑 </h1>
-                <h3 >작성자: <span id="nickname">{{ user_info.nickname }}</span></h3>
-                <div class="posting-box" >
+    <div style="height:150px;"></div>
+    <div class="wrap" style=" max-width: 900px; margin: auto;">
+        <div class="jumbotron jumbotron-fluid"
+             style="margin-bottom: 10px; font-family: 'Poor Story', cursive; background-color: rgb(10 10 10 / 0%);">
+            <div class="container" style="margin-bottom: 30px;">
+                <h1>글 쓰기📑</h1>
+                <h3>추억을 공유해주세요! </h3>
+                <h4>작성자: <span id="nickname">{{ user_info.nickname }}</span></h4>
+            </div>
+                <div class="posting-box" style="font-family: 'Poor Story', cursive">
                     {% if status == False %}
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="title" placeholder="사진 제목">
-                    </div>
-                    <div class="custom-file"  style="margin-bottom: 20px;">
-                        <input type="file" class="custom-file-input" id="file">
-                        <label class="custom-file-label" for="file">사진 저장하기!</label>
-                    </div>
 
-                    <div class="form-group">
-                        <textarea class="form-control" id="content" rows="3"
-                                  placeholder="여행 후기를 남겨주세요!"></textarea>
-                    </div>
+                        <div class="form-group" style="margin-top: 10px">
+                                <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
+                                       id="title" placeholder="제목">
+                            </div>
+
+
+                        <div class="custom-file" style="margin-bottom: 10px;">
+                            <input type="file" class="custom-file-input" id="file">
+                            <label class="custom-file-label" for="file">선택된 파일 없음</label>
+                        </div>
+
+
+                        <div class="form-group">
+                        <textarea class="form-control" id="content"
+                                  placeholder="추억으로 남기고 싶은, 공유하고 싶은 이야기를 적어주세요!"></textarea>
+                        </div>
                     {% endif %}
 
-                    {% if status == True %}
-
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="up_title" value="{{ post.title }}">
-                    </div>
-
-                    <div class="custom-file" style="margin-bottom: 20px">
-                        <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
-                        <label class="custom-file-label" for="file">사진 선택하기</label>
-                    </div>
-
-                    <div class="form-group">
-                        <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
-                    </div>
-                    {% endif %}
-                    <div class="writebtn">
                         {% if status == True %}
-                        <button onclick="go_back()" type="button" class="btn btn-primary">돌아가기</button>
-                        <button onclick="post_update({{ post.num }})" type="button" class="btn btn-primary">
-                            <input type="hidden" id="" value=""/>수정하기</button>
+                            <div class="posting-box">
+                            <div class="form-group">
+                                <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
+                                       id="up_title" value="{{ post.title }}">
+                            </div>
+                            <div class="custom-file" style="margin-bottom: 10px">
+                                <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                                <label class="custom-file-label" for="file">선택된 파일 없음</label>
+                            </div>
 
-                        {% else %}
-                        <button onclick="go_main()" type="button" class="btn btn-primary">돌아가기</button>
-                        <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
-                        <input type="hidden" onclick=""
-
+                            <div class="form-group">
+                                <textarea class="form-control" id="up_content">{{ post.content }}</textarea>
+                            </div>
                         {% endif %}
+                        <div class="writebtn">
+                            {% if status == True %}
+                                <button onclick="go_back()" style="font-family: 'Poor Story', cursive" type="button"
+                                        class="btn btn-secondary">돌아가기
+                                </button>
+                                <button onclick="post_update({{ post.num }})" style="font-family: 'Poor Story', cursive"
+                                        type="button" class="btn btn-primary">
+                                    <input type="hidden" id="" value=""/>수정하기
+                                </button>
+
+                            {% else %}
+                                <button onclick="go_main()" style="font-family: 'Poor Story', cursive" type="button"
+                                        class="btn btn-secondary">돌아가기
+                                </button>
+                                <button onclick="posting()" style="font-family: 'Poor Story', cursive" type="button"
+                                        class="btn btn-primary">저장하기
+                                </button>
+                                <input type="hidden" onclick="">
+
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-columns" id="cards-box">
+            <div class="card-columns" id="cards-box">
+            </div>
         </div>
     </div>
-</div>
 
 
 </body>
