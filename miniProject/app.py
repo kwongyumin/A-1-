@@ -215,15 +215,15 @@ def insert_content():
 
 
 # 포스트 삭제
-@app.route('/api/delete_post', methods=['POST'])
+@app.route('/delete_post', methods=['POST'])
 def delete_word():
     num_receive = request.form["num_give"]
     db.board.delete_one({"num": num_receive})
-    return jsonify({'result': 'success', 'msg': '포스트 삭제ㅠ'})
+    return jsonify({'result': 'success', 'msg': '삭제 완료!'})
 
 
 # 포스트 수정
-@app.route('/api/update_post/<num>')
+@app.route('/update_post/<num>')
 def update_post(num):
     token_receive = request.cookies.get('mytoken')
     try:
