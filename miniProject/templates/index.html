@@ -4,15 +4,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 </head>
 
-<script>
 
-        function  go_view(num){
-            let num_title = num
-			//url += num
-			window.location.href="/ObjectView/" + num_title
-        }
+<script src="../static/js/index.js"></script>
 
-</script>
 
 <body style="background-color: rgba(240, 240, 240, 0.4); padding-top: 140px;" >
 {% include('head.html') %}
@@ -54,7 +48,7 @@
 			<div class="col" style="padding-right: 0";>
 				<div class="card h-100" style="border-radius:10px 10px 10px 10px;">
 
-					<img src="/static/userimg/{{boardList.file}}"
+					<img src="../static/userimg/{{boardList.file}}"
 						 class="card-img-top"
 						 style="width: 100%; height: 220px; object-fit: cover; border-radius: 10px 10px 10px 10px;">
 					<div class="card-body" style="border-radius: 10px 10px 10px 10px;">
