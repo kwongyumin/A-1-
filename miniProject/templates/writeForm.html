@@ -148,29 +148,31 @@
 
 
             let nickname = $('#nickname').text()
-
             let title = $('#up_title').val()
             let content = $("#up_content").val()
-
             let file = $('#up_file').val()
-            console.log(12)
             console.log(file)
-            let form_data = new FormData()
+            {#let form_data = new FormData()#}
 
-
-            form_data.append("file_give", file)
-            form_data.append("title_give", title)
-            form_data.append("content_give", content)
-            form_data.append("nickname_give", nickname)
-            form_data.append("num_give", num)
+            {#form_data.append("file_give", file)#}
+            {#form_data.append("title_give", title)#}
+            {#form_data.append("content_give", content)#}
+            {#form_data.append("nickname_give", nickname)#}
+            {#form_data.append("num_give", num)#}
 
             $.ajax({
                 type: "POST",
                 url: "/write/update",
-                data: form_data,
-                cache: false,
-                contentType: false,
-                processData: false,
+                data: {
+                    file_give: file,
+                    title_give: title,
+                    content_give: content,
+                    nickname_give: nickname,
+                    num_give: num
+                },
+                {#cache: false,#}
+                {#contentType: false,#}
+                {#processData: false,#}
                 success: function (response) {
 
                     alert(response["msg"])
@@ -234,8 +236,8 @@
                                        id="up_title" value="{{ post.title }}">
                             </div>
                             <div class="custom-file" style="margin-bottom: 10px">
-                                <input type="text" class="custom-file-input" id="up_file" files="{{ post.file }}">
-                                <label class="custom-file-label" for="file">선택된 파일 없음</label>
+                                <input type="text" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                                <label class="custom-file-label" for="file">{{ post.file }}(사진은 수정이 불가능 합니다 ^^)</label>
                             </div>
 
                             <div class="form-group">
