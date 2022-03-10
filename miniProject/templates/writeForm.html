@@ -105,6 +105,9 @@
 
 
     <script>
+
+
+
         $(document).ready(function () {
             bsCustomFileInput.init()
         })
@@ -120,6 +123,24 @@
             let content = $("#content").val()
             let num = Date.now()
             let file = $('#file')[0].files[0]
+
+            if($('#title').val() == ""){
+                alert("제목을 작성해주세요!");
+                return
+
+            }
+
+            if($('#file').val() == ""){
+                alert("이미지를 첨부해주세요.;");
+                return
+
+            }
+
+             if($('#content').val() == ""){
+                alert("내용을 작성해주세요!");
+                return
+            }
+
             let form_data = new FormData()
 
 
@@ -151,14 +172,17 @@
             let title = $('#up_title').val()
             let content = $("#up_content").val()
             let file = $('#up_file').val()
-            console.log(file)
-            {#let form_data = new FormData()#}
+            
+            if($('#up_title').val() == ""){
+                alert("제목을 작성해주세요!");
+                return
+            }
 
-            {#form_data.append("file_give", file)#}
-            {#form_data.append("title_give", title)#}
-            {#form_data.append("content_give", content)#}
-            {#form_data.append("nickname_give", nickname)#}
-            {#form_data.append("num_give", num)#}
+            if($('#up_content').val() == ""){
+                alert("내용을 작성해주세요!");
+                return
+            }
+
 
             $.ajax({
                 type: "POST",
@@ -272,6 +296,7 @@
             </div>
         </div>
     </div>
+
 
 
 </body>

@@ -186,6 +186,7 @@ def insert_content():
 
     # 파라미터값 받기
     file = request.files["file_give"]
+    print(file)
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
