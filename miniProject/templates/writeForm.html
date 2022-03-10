@@ -20,7 +20,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 
-    <title>글 작성</title>
+    <title>글 쓰기</title>
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <style>
@@ -76,31 +76,28 @@
             border-bottom: 2px solid gray;
         }
 
-        .writebtn {
+        .writebtn{
             display: flex;
+            justify-content: space-between;
         }
 
 
-        .writebtn > button {
+        .writebtn > button{
 
-            margin: 10px auto;
-            width: 300px;
-
-            font-size: 17px;
-            border: 0;
-            border-radius: 18px;
-            width: 120px;
-            height: 40px;
-            font-weight: bold;
-            transition-duration: 0.5s;
-            cursor: pointer;
+			font-size: 17px;
+			border: 0;
+			border-radius: 18px;
+			width: 120px;
+			height: 40px;
+			font-weight: bold;
+			transition-duration: 0.5s;
+			cursor: pointer;
         }
-
         .writebtn > button:hover {
 
             background-color: white;
-            transition-duration: 0.5s;
-            color: gray;
+			transition-duration: 0.5s;
+			color: gray;
         }
 
 
@@ -202,39 +199,43 @@
     <div class="wrap" style=" max-width: 900px; margin: auto;">
         <div class="jumbotron jumbotron-fluid"
              style="margin-bottom: 10px; font-family: 'Poor Story', cursive; background-color: rgb(10 10 10 / 0%);">
-            <div class="container" style="margin-bottom: 30px; margin-left: 250px">
-                <h1>여행 후기📑</h1>
+            <div class="container" style="margin-bottom: 30px;">
+                <h1>글 쓰기📑</h1>
                 <h3>추억을 공유해주세요! </h3>
-                <h5>작성자: <span id="nickname">{{ user_info.nickname }}</span></h5>
+                <h4>작성자: <span id="nickname">{{ user_info.nickname }}</span></h4>
             </div>
                 <div class="posting-box" style="font-family: 'Poor Story', cursive">
                     {% if status == False %}
+
                         <div class="form-group" style="margin-top: 10px">
-                            <input type="text" id="title" placeholder="사진 제목">
-                        </div>
-                        <div class="custom-file" style="margin-bottom: 10px; margin-top: 10px">
+                                <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
+                                       id="title" placeholder="제목">
+                            </div>
+
+                        <div class="custom-file" style="margin-bottom: 10px;">
                             <input type="file" class="custom-file-input" id="file">
                             <label class="custom-file-label" for="file">선택된 파일 없음</label>
                         </div>
 
                         <div class="form-group">
-                        <textarea class="form-control" id="content" rows="3"
-                                  placeholder="여행 후기를 남겨주세요!"></textarea>
+                        <textarea class="form-control" id="content"
+                                  placeholder="추억으로 남기고 싶은, 공유하고 싶은 이야기를 적어주세요!"></textarea>
                         </div>
                     {% endif %}
 
                         {% if status == True %}
-                            <div class="posting-box" style="font-family: 'Poor Story', cursive">
-                            <div class="custom-file" style="margin-bottom: 10px">
-                                <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
-                                <label class="custom-file-label" for="file">선택된 파일 없음</label>
-                            </div>
+                            <div class="posting-box">
                             <div class="form-group">
                                 <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
                                        id="up_title" value="{{ post.title }}">
                             </div>
+                            <div class="custom-file" style="margin-bottom: 10px">
+                                <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                                <label class="custom-file-label" for="file">선택된 파일 없음</label>
+                            </div>
+
                             <div class="form-group">
-                                <textarea class="form-control" id="up_content" rows="3">{{ post.content }}</textarea>
+                                <textarea class="form-control" id="up_content">{{ post.content }}</textarea>
                             </div>
                         {% endif %}
                         <div class="writebtn">
