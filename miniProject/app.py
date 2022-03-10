@@ -218,7 +218,7 @@ def insert_content():
 @app.route('/api/delete_post', methods=['POST'])
 def delete_word():
     num_receive = request.form["num_give"]
-    db.board.delete_one({"num": int(num_receive)})
+    db.board.delete_one({"num": num_receive})
     return jsonify({'result': 'success', 'msg': '포스트 삭제ㅠ'})
 
 
