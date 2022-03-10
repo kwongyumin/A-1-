@@ -186,7 +186,6 @@ def insert_content():
 
     # 파라미터값 받기
     file = request.files["file_give"]
-    print(file)
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
@@ -195,7 +194,10 @@ def insert_content():
     extension = file.filename.split('.')[-1]
     filename = file.filename.split('.')[0]
 
-    save_to = f'static/userImg/{filename}.{extension}'
+    # 파일명에 파일 넘버 추가
+    numfilename = num + '.' + filename
+
+    save_to = f'static/userImg/{numfilename}.{extension}'
     file.save(save_to)
 
     doc = {
@@ -203,7 +205,7 @@ def insert_content():
         'title': title_receive,
         'nickname': nickname_receive,
         'content': content_receive,
-        'file': f'{filename}.{extension}'
+        'file': f'{numfilename}.{extension}'
 
     }
     print(doc)
@@ -235,10 +237,16 @@ def update_post(num):
         # board db에서 해당 num값에 해당하는 dic 찾아오기
         post = db.board.find_one({'num': num}, {'_id': False})
 
+        # file에서 num을 빼고 원본 파일명으로 되돌리는 일
+        filename = post['file'].split('.')[1]
+        extention = post['file'].split('.')[-1]
+
+        file = f'{filename}.{extention}'
+
 
         status = True
 
-        return render_template('writeForm.html', user_info=user_info, status=status, post=post)
+        return render_template('writeForm.html', user_info=user_info, status=status, post=post, file=file)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -260,10 +268,10 @@ def update_content():
 
     # 파일 이름/ 확장자명 분리
     extension = file.split('.')[-1]
-    filename = file.split('.')[0]
+    filename = file.split('.')[1]
 
-    # save_to = f'static/userImg/{filename}.{extension}'
-    # file.save(save_to)
+    # 파일명에 파일 넘버 추가
+    numfilename = num + '.' + filename
 
     db.board.update_one(
         {'num': num},
@@ -271,7 +279,7 @@ def update_content():
             'title': title_receive,
             'nickname': nickname_receive,
             'content': content_receive,
-            'file': f'{filename}.{extension}'}
+            'file': f'{numfilename}.{extension}'}
         }
     )
 
