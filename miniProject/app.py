@@ -190,12 +190,10 @@ def insert_content():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
+
+    # 파일 이름/ 확장자명 분리
     extension = file.filename.split('.')[-1]
-
-    today = datetime.datetime.now()
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
-    filename = f'file-{mytime}'
+    filename = file.filename.split('.')[0]
 
     save_to = f'static/userImg/{filename}.{extension}'
     file.save(save_to)
@@ -236,7 +234,8 @@ def update_post(num):
 
         # board db에서 해당 num값에 해당하는 dic 찾아오기
         post = db.board.find_one({'num': num}, {'_id': False})
-        print(post)
+
+
         status = True
 
         return render_template('writeForm.html', user_info=user_info, status=status, post=post)
@@ -253,6 +252,7 @@ def update_content():
     # 파라미터값 받기
 
     file = request.files["file_give"]
+    print(file)
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
     nickname_receive = request.form['nickname_give']
@@ -260,12 +260,9 @@ def update_content():
 
     num = num_receive
 
+    # 파일 이름/ 확장자명 분리
     extension = file.filename.split('.')[-1]
-
-    today = datetime.datetime.now()
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
-    filename = f'file-{mytime}'
+    filename = file.filename.split('.')[0]
 
     save_to = f'static/userImg/{filename}.{extension}'
     file.save(save_to)
