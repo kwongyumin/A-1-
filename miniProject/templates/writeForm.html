@@ -152,7 +152,9 @@
             let title = $('#up_title').val()
             let content = $("#up_content").val()
 
-            let file = $('#up_file')[0].files[0]
+            let file = $('#up_file').val()
+            console.log(12)
+            console.log(file)
             let form_data = new FormData()
 
 
@@ -232,7 +234,7 @@
                                        id="up_title" value="{{ post.title }}">
                             </div>
                             <div class="custom-file" style="margin-bottom: 10px">
-                                <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                                <input type="text" class="custom-file-input" id="up_file" files="{{ post.file }}">
                                 <label class="custom-file-label" for="file">선택된 파일 없음</label>
                             </div>
 
