@@ -9,7 +9,7 @@
         function delete_post(){
             $.ajax({
                     type: "POST",
-                    url: `/api/delete_post`,
+                    url: `/delete_post`,
                     data: {
                         num_give: "{{ num }}"
                     },
@@ -26,7 +26,7 @@
 
 
 
-            window.location.href = "/api/update_post/"+num
+            window.location.href = "/update_post/"+num
         }
 
         function toggle_like(num){
