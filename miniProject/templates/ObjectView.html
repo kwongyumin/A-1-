@@ -76,12 +76,12 @@
             <div class="single-page-artical">
                 <div class="artical-content">
                     <img src="../static/userImg/{{ post.file }}" title="banner1">
-                    <h2>{{ post.title }}</h2>
-                    <p>{{ post.content }}</p>
+                    <h2 style="font-size: xxx-large">{{ post.title }}</h2>
+                    <p style="font-size: x-large">{{ post.content }}</p>
                 </div>
                 <div class="artical-links">
-                    <ul>
-                        <li><a onclick="toggle_like({{ post.num }})", aria-label="heart">
+                    <ul style="margin: revert">
+                        <li><a onclick="toggle_like({{ post.num }})", aria-label="heart" style="padding: inherit; font-size: x-large">
                                 {% if heart.heart_by_me == True %}
                                 <i class="fa-solid fa-heart" aria-hidden="true"></i>&nbsp;
                                 {% else %}
@@ -95,8 +95,10 @@
                 {% if status %}
                 <div class="share-artical">
                     <ul>
-                        <li><a onclick="update_post({{ post.num }})"><img src="../static/img/facebooks.png" title="facebook">수정</a></li>
-                        <li><a onclick="delete_post()"><img src="../static/img/twiter.png" title="Twitter">삭제</a></li>
+
+                        <li><a onclick="update_post({{ post.num }})" style="font-size: x-large"><i class="fa-solid fa-pencil"></i>&nbsp;수정</a></li>
+                        <li><a onclick="delete_post()" style="font-size: x-large"><i class="fa-solid fa-trash-can"></i>&nbsp;삭제</a></li>
+
                     </ul>
                 </div>
                 {% endif %}

@@ -211,7 +211,7 @@ def insert_content():
 
     db.board.insert_one(doc)
 
-    return jsonify({'msg': "작성완료!", 'num': num})
+    return jsonify({'msg': "작성 완료!", 'num': num})
 
 
 # 포스트 삭제
@@ -219,7 +219,7 @@ def insert_content():
 def delete_word():
     num_receive = request.form["num_give"]
     db.board.delete_one({"num": num_receive})
-    return jsonify({'result': 'success', 'msg': '포스트 삭제ㅠ'})
+    return jsonify({'result': 'success', 'msg': '삭제 완료!'})
 
 
 # 포스트 수정
@@ -279,7 +279,7 @@ def update_content():
         }
     )
 
-    return jsonify({'msg': "수정완료!", 'num': num})
+    return jsonify({'msg': "수정 완료!", 'num': num})
 
 
 @app.route('/update_like', methods=["POST"])
