@@ -105,6 +105,9 @@
 
 
     <script>
+
+
+
         $(document).ready(function () {
             bsCustomFileInput.init()
         })
@@ -120,6 +123,24 @@
             let content = $("#content").val()
             let num = Date.now()
             let file = $('#file')[0].files[0]
+
+            if($('#title').val() == ""){
+                alert("제목을 작성해주세요!");
+                return
+
+            }
+
+            if($('#file').val() == ""){
+                alert("이미지를 첨부해주세요.;");
+                return
+
+            }
+
+             if($('#content').val() == ""){
+                alert("내용을 작성해주세요!");
+                return
+            }
+
             let form_data = new FormData()
 
 
@@ -152,17 +173,29 @@
             let title = $('#up_title').val()
             let content = $("#up_content").val()
 
-            let file = $('#up_file').val()
-            console.log(12)
-            console.log(file)
-            let form_data = new FormData()
 
+            let file = $('#up_file')[0].files[0]
+
+
+            if($('#up_title').val() == ""){
+                alert("제목을 작성해주세요!");
+                return
+            }
+
+            if($('#up_content').val() == ""){
+                alert("내용을 작성해주세요!");
+                return
+            }
+
+
+            let form_data = new FormData()
 
             form_data.append("file_give", file)
             form_data.append("title_give", title)
             form_data.append("content_give", content)
             form_data.append("nickname_give", nickname)
             form_data.append("num_give", num)
+
 
             $.ajax({
                 type: "POST",
@@ -206,13 +239,15 @@
                 <h3>추억을 공유해주세요! </h3>
                 <h4>작성자: <span id="nickname">{{ user_info.nickname }}</span></h4>
             </div>
+
+
                 <div class="posting-box" style="font-family: 'Poor Story', cursive">
                     {% if status == False %}
 
                         <div class="form-group" style="margin-top: 10px">
-                                <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
-                                       id="title" placeholder="제목">
-                            </div>
+                            <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
+                                   id="title" placeholder="제목">
+                        </div>
 
 
                         <div class="custom-file" style="margin-bottom: 10px;">
@@ -225,51 +260,56 @@
                         <textarea class="form-control" id="content"
                                   placeholder="추억으로 남기고 싶은, 공유하고 싶은 이야기를 적어주세요!"></textarea>
                         </div>
+
                     {% endif %}
 
-                        {% if status == True %}
-                            <div class="posting-box">
-                            <div class="form-group">
-                                <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
-                                       id="up_title" value="{{ post.title }}">
-                            </div>
-                            <div class="custom-file" style="margin-bottom: 10px">
-                                <input type="text" class="custom-file-input" id="up_file" files="{{ post.file }}">
-                                <label class="custom-file-label" for="file">선택된 파일 없음</label>
-                            </div>
-
-                            <div class="form-group">
-                                <textarea class="form-control" id="up_content">{{ post.content }}</textarea>
-                            </div>
-                        {% endif %}
-                        <div class="writebtn">
-                            {% if status == True %}
-                                <button onclick="go_back()" style="font-family: 'Poor Story', cursive" type="button"
-                                        class="btn btn-secondary">돌아가기
-                                </button>
-                                <button onclick="post_update({{ post.num }})" style="font-family: 'Poor Story', cursive"
-                                        type="button" class="btn btn-primary">
-                                    <input type="hidden" id="" value=""/>수정하기
-                                </button>
-
-                            {% else %}
-                                <button onclick="go_main()" style="font-family: 'Poor Story', cursive" type="button"
-                                        class="btn btn-secondary">돌아가기
-                                </button>
-                                <button onclick="posting()" style="font-family: 'Poor Story', cursive" type="button"
-                                        class="btn btn-primary">저장하기
-                                </button>
-                                <input type="hidden" onclick="">
-
-                            {% endif %}
+                    {% if status == True %}
+                        <div class="posting-box">
+                        <div class="form-group">
+                            <input type="email" class="form-control" style="font-family: 'Poor Story', cursive"
+                                   id="up_title" value="{{ post.title }}">
                         </div>
+                        <div class="custom-file" style="margin-bottom: 10px">
+                            <input type="file" class="custom-file-input" id="up_file" value="{{ post.file }}">
+                            <label class="custom-file-label" for="file">선택된 파일 없음</label>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea class="form-control" id="up_content">{{ post.content }}</textarea>
+                        </div>
+                    {% endif %}
+                    <div class="writebtn">
+                        {% if status == True %}
+
+                            <button onclick="go_back()" style="font-family: 'Poor Story', cursive" type="button"
+                                    class="btn btn-secondary">돌아가기
+                            </button>
+                            <button onclick="post_update({{ post.num }})" style="font-family: 'Poor Story', cursive"
+                                    type="button" class="btn btn-primary">
+                                <input type="hidden" id="" value=""/>수정하기
+                            </button>
+
+                        {% else %}
+                            <button onclick="go_main()" style="font-family: 'Poor Story', cursive" type="button"
+                                    class="btn btn-secondary">돌아가기
+                            </button>
+                            <button onclick="posting()" style="font-family: 'Poor Story', cursive" type="button"
+                                    class="btn btn-primary">저장하기
+                            </button>
+                            <input type="hidden" onclick="">
+
+
+                        {% endif %}
+                    </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-columns" id="cards-box">
-            </div>
+
+        </div>
+
+        <div class="card-columns" id="cards-box">
         </div>
     </div>
+</div>
 
 
 </body>
