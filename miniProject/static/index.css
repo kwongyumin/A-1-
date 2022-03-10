@@ -1,25 +1,25 @@
 * {margin:0;padding:0;
     font-family: 'Stylish', sans-serif;}
 
-/*.body_color{*/
-/*    position: absolute;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    background-image: var(.bg-secondary.bg-gradient);*/
-/*}*/
 
 /* 슬라이드 배너 섹션 */
 .section{
-    padding: 190px 15px 15px 15px;
+    margin: 0 auto;
+    width: 65%;
+    max-height: 700px;
+    border-radius: 15px;
+    padding: 250px 15px 15px 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    /*background-color: rgba(240, 240, 240, 0.4);*/
 }
 /* INPUT 가리기 */
 .section input[id*="slide"] {display:none;}
 
 /* 슬라이드 영역 - max-width 크기를 조절해주면 됩니다*/
 .section .slidewrap{
+    border-radius: 15px;
     width: 1200px;
     height: 600px;
     margin: 0 auto;
@@ -42,6 +42,7 @@
     height: 600px;
     display: block;
     position: relative;}
+
 .section .slidelist > li > a img{
     width: 100%;
     object-fit: cover;
@@ -58,12 +59,12 @@
 }
 
 .section .slidelist .left {
-    left: 30px;
+    left: 0;
     background: url('../static/img/left.png') center center / 100% no-repeat;
 }
 
 .section .slidelist .right {
-    right: 30px;
+    right: 0;
     background: url('../static/img/right.png') center center / 100% no-repeat;
 }
 
@@ -80,11 +81,22 @@
     transform: translateX(-200%);
 }
 
+.col{
+    padding-right: 0;
+    border-radius: 15px;
+}
+
+.col:hover{
+    box-shadow: 8px 7px 1px rgba(0, 0, 0, 0.2);
+}
+
 /* 포스팅 카드 너비조절 */
 .mycards {
+    border-radius: 15px;
+    padding: 30px;
     margin: 20px auto 0px auto;
-    width: 95%;
-    max-width: 1200px;
+    max-width: 65%;
+    /*background-color: rgba(240, 240, 240, 0.4);*/
 }
 
 .bottom{
